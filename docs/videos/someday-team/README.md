@@ -16,6 +16,8 @@ this team. It ends with the wall emptying out and a blank 「登场：＿＿」.
 small English, and a 2–4 s hold line at the end of each section so the presenter can pause and talk.
 Story, beats and the honesty rules are in [`director-brief.md`](director-brief.md).
 
+**Rendered film:** [`release/someday-team.mp4`](release/someday-team.mp4) (1920×1080, 30 fps, 170 s).
+
 ## Setup (once)
 
 ```bash
