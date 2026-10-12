@@ -1,7 +1,7 @@
 // A thread's message list: built once, measured once, then driven by time.
 import { makeFace, updateFace } from './faces.mjs';
 import { CATS } from './timeline.mjs';
-import { clamp, easeBack, easeOut, h, lerp, place, prog, typed } from './util.mjs';
+import { clamp, easeBack, easeOut, h, lerp, place, prog, typed } from '../../../promo-kit/util.mjs';
 
 const COL_W = 900;
 const PAD = 24;

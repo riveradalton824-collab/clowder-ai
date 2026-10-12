@@ -2,7 +2,7 @@
 // where cross-model review finds and fixes a real bug.
 import { makeFace, updateFace } from './faces.mjs';
 import { WS } from './timeline.mjs';
-import { clamp, easeInOut, easeOut, h, place, prog, win } from './util.mjs';
+import { clamp, easeInOut, easeOut, h, place, prog, win } from '../../../promo-kit/util.mjs';
 
 const CODE = [
   ['kw', 'export function ', 'fn', 'checkIn', '', '(cat, feeder) {'],

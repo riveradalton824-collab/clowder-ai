@@ -1,7 +1,7 @@
 // Cat faces come only from the f321 sticker set (the house's canonical look),
 // and the yarn ball is the visual stand-in for 球权 (who holds the task).
 import { CATS, MOODS } from './timeline.mjs';
-import { clamp, h, stateAt, svg } from './util.mjs';
+import { clamp, h, stateAt, svg } from '../../../promo-kit/util.mjs';
 
 const STICKERS = '/packages/web/public/f321/stickers/';
 export const STATES = ['applied', 'drilled', 'invalidated', 'dormant'];

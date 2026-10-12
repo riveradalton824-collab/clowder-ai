@@ -2,7 +2,7 @@
 // one yarn ties them together, and the brand closes on the relationship.
 import { makeBall, makeFace, placeBall, updateFace } from './faces.mjs';
 import { FINALE as F } from './timeline.mjs';
-import { clamp, easeBack, easeInOut, easeOut, h, lerp, place, prog, quad, svg, win } from './util.mjs';
+import { clamp, easeBack, easeInOut, easeOut, h, lerp, place, prog, quad, svg, win } from '../../../promo-kit/util.mjs';
 
 const CENTER = { x: 960, y: 420 };
 const SPOTS = { xian: { x: 600, y: 410 }, yan: { x: 780, y: 250 }, shuo: { x: 1140, y: 250 }, momo: { x: 1320, y: 410 } };

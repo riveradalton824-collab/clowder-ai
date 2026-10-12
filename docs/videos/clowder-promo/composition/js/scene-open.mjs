@@ -1,7 +1,7 @@
 // S1「路由器」: three chat windows, one human copy-pasting between them.
 // Every paste drags a yarn line; the lines tangle, then pull into a knot.
 import { PROMISE, tangleHops } from './timeline.mjs';
-import { clamp, easeInOut, easeOut, h, lerp, place, prog, rng, svg, win } from './util.mjs';
+import { clamp, easeInOut, easeOut, h, lerp, place, prog, rng, svg, win } from '../../../promo-kit/util.mjs';
 
 const WINDOWS = [
   { name: 'Claude', x: 210, y: 150 },

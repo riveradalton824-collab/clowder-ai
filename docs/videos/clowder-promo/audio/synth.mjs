@@ -18,7 +18,7 @@ import {
   YOU_MIDI,
   tangleHops,
 } from '../composition/js/timeline.mjs';
-import { SR, hit, makeBus, mtof, pad, pluck, reverb, riser, roll, sweep, tone, writeWav } from './dsp.mjs';
+import { SR, hit, makeBus, mtof, pad, pluck, reverb, riser, roll, sweep, tone, writeWav } from '../../promo-kit/dsp.mjs';
 
 const dry = makeBus(DURATION);
 const send = makeBus(DURATION);

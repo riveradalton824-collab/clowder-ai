@@ -3,7 +3,7 @@
 import { makeBall, makeFace, placeBall, updateFace } from './faces.mjs';
 import { KNOT } from './scene-open.mjs';
 import { PROMISE as P } from './timeline.mjs';
-import { easeBack, easeBounce, easeInOut, easeOut, h, lerp, place, prog, quad, svg, win } from './util.mjs';
+import { easeBack, easeBounce, easeInOut, easeOut, h, lerp, place, prog, quad, svg, win } from '../../../promo-kit/util.mjs';
 
 const COUNTER_Y = 770;
 const R = 26;

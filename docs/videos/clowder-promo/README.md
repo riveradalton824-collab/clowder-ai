@@ -15,13 +15,13 @@ The full creative contract (belief change, beats, sound map, provenance) is in [
 ## Render
 
 ```bash
-cd docs/videos/clowder-promo
-node render.mjs                         # → output/clowder-one-thread.mp4 (picture + score, ≈3 min)
-node render.mjs --stills 9.8,34,57.5    # → output/stills/*.png
-node render.mjs --from 42 --to 55       # → output/preview.mp4 (silent)
-node audio/synth.mjs output/score.wav   # score only
+node docs/videos/promo-kit/render.mjs docs/videos/clowder-promo                       # → output/clowder-one-thread.mp4 (≈3 min)
+node docs/videos/promo-kit/render.mjs docs/videos/clowder-promo --stills 9.8,34,57.5  # → output/stills/*.png
+node docs/videos/promo-kit/render.mjs docs/videos/clowder-promo --from 42 --to 55     # → output/preview.mp4 (silent)
+node docs/videos/clowder-promo/audio/synth.mjs output/score.wav                       # score only
 ```
 
+The renderer, timing helpers and synth live in [`../promo-kit`](../promo-kit/README.md) (shared with `f317-companion`).
 Needs Node 20+, ffmpeg (libx264 + aac), and Playwright with Chromium (resolved from local or global `npm root -g`).
 Fonts load from Google Fonts at render time (Noto Serif SC / Noto Sans SC / Inter / JetBrains Mono / Source Serif 4).
 `output/` is git-ignored.
@@ -39,8 +39,7 @@ To scrub it live in a browser, serve the repo root and open
 | `composition/js/thread.mjs`, `messages.mjs`, `yarn.mjs` | product world: sidebar, two threads, ball holder, trails, memory link |
 | `composition/js/workspace.mjs`, `phone.mjs` | files / tests / review card; preview phone morphs and the payoff |
 | `composition/js/captions.mjs`, `finale.mjs` | chapter captions, payoff line, family + end card |
-| `audio/dsp.mjs`, `audio/synth.mjs` | dependency-free synth: each cat has a note; the human’s correction motif returns as memory |
-| `render.mjs` | serves the repo, steps `window.seek(t)` per frame in headless Chromium, pipes to ffmpeg, muxes with loudnorm (−16 LUFS) |
+| `audio/synth.mjs` | score: each cat has a note; the human’s correction motif returns as memory (synth in `promo-kit/dsp.mjs`) |
 
 Every visual is a pure function of `t` (no CSS animations, seeded randomness), so any frame can be re-rendered exactly.
 

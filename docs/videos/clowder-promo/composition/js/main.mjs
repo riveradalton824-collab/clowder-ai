@@ -6,7 +6,7 @@ import { buildPhone } from './phone.mjs';
 import { buildOpen } from './scene-open.mjs';
 import { buildPromise } from './scene-promise.mjs';
 import { buildThread } from './thread.mjs';
-import { DURATION, PROMISE } from './timeline.mjs';
+import { DURATION, FPS, PROMISE } from './timeline.mjs';
 import { buildWorkspace } from './workspace.mjs';
 
 const stage = document.getElementById('stage');
@@ -41,7 +41,7 @@ await preload();
 thread.layout();
 await document.fonts.ready;
 window.seek = seek;
-window.DURATION = DURATION;
+window.FILM = { name: 'clowder-one-thread', duration: DURATION, fps: FPS };
 seek(Number(new URLSearchParams(location.search).get('t') || 0));
 window.__ready = true;
 

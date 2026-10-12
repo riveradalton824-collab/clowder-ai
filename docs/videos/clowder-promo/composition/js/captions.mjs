@@ -1,6 +1,6 @@
 // Chapter captions above the product, and the payoff line beside the phone.
 import { CAPTIONS, PAYOFF } from './timeline.mjs';
-import { easeOut, h, place, prog, win } from './util.mjs';
+import { easeOut, h, place, prog, win } from '../../../promo-kit/util.mjs';
 
 export function buildCaptions(stage) {
   const caps = CAPTIONS.map((c, i) => {

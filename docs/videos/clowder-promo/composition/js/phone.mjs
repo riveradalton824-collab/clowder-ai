@@ -1,7 +1,7 @@
 // Live preview phone. It morphs as the cats work (skeleton → plain → styled →
 // big buttons after the human's correction), then takes the stage in the payoff.
 import { PAYOFF, WS } from './timeline.mjs';
-import { easeInOut, easeOut, h, hexLerp, lerp, place, prog, win } from './util.mjs';
+import { easeInOut, easeOut, h, hexLerp, lerp, place, prog, win } from '../../../promo-kit/util.mjs';
 
 const PH = { x: 1305, y: 394, w: 250, h: 500 };
 const CW = 206;

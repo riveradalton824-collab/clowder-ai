@@ -1,7 +1,7 @@
 // The ball travels between whoever holds the task; the yarn it unwinds stays
 // behind as the thread's visible history.
 import { makeBall, placeBall } from './faces.mjs';
-import { clamp, easeBack, easeInOut, prog, quad, svg } from './util.mjs';
+import { clamp, easeBack, easeInOut, prog, quad, svg } from '../../../promo-kit/util.mjs';
 
 const R = 15;
 

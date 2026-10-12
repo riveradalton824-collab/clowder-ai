@@ -3,7 +3,7 @@
 import { makeBall, makeFace, placeBall, updateFace } from './faces.mjs';
 import { VIEW_H, buildList } from './messages.mjs';
 import { BALL1, BALL2, CATS, MEMORY_LINK, PROMISE, S, THREAD1, THREAD2 } from './timeline.mjs';
-import { easeInOut, easeOut, h, lerp, place, prog, svg, win } from './util.mjs';
+import { easeInOut, easeOut, h, lerp, place, prog, svg, win } from '../../../promo-kit/util.mjs';
 import { buildYarn } from './yarn.mjs';
 
 export const APP = { x: 100, y: 120, w: 1720, h: 920 };
