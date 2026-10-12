@@ -1,0 +1,8 @@
+{
+  "name": "someday-team-film",
+  "private": true,
+  "description": "《以后再说 / Someday》leadership concept film — local runtime deps for the composition",
+  "dependencies": {
+    "three": "0.160.0"
+  }
+}
