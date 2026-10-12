@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Score for《我在这里 / Right Here》(G major, lo-fi evening). No real voices:
-// the cat "speaks" in soft plucks per character, the human in low hums, so you
+// 宪宪 "speaks" in soft marimba notes per character, the human in low hums, so you
 // can hear a conversation without a faked voice. The tutorial video keeps
 // playing underneath, muffled whenever something covers it.
 //   node audio/synth.mjs output/score.wav
@@ -17,6 +17,10 @@ const both = (fn, ...a) => {
   fn(send, ...a);
 };
 const GLOCK = [[1, 1, 2.2], [2.76, 0.45, 0.8], [5.4, 0.22, 0.35], [8.93, 0.1, 0.15]];
+// 宪宪's instrument (same as in《一根线》): marimba; a short-decay version for speech.
+const MARIMBA = [[1, 1, 0.9], [3.99, 0.3, 0.25], [10, 0.08, 0.06]];
+const MARIMBA_SPEECH = [[1, 1, 0.16], [3.99, 0.3, 0.06], [10, 0.08, 0.02]];
+const xian = (t, m, amp = 0.2) => both(tone, t, mtof(m), { amp, partials: MARIMBA, pan: 0.3 });
 const chime = (t, notes, amp = 0.12, gap = 0.09) => notes.forEach((m, i) => both(tone, t + i * gap, mtof(m), { amp, partials: GLOCK, pan: 0.25 }));
 const blip = (t, m, up = true) => both(sweep, t, { f0: mtof(m) * (up ? 0.7 : 1.2), f1: mtof(m), dur: 0.09, amp: 0.08 });
 const PENTA = [67, 69, 71, 74, 76];
@@ -27,7 +31,7 @@ function catTalk(text, t0, t1) {
   chars.forEach((c, i) => {
     if ('，。、「」？——……· '.includes(c)) return;
     const m = PENTA[(c.codePointAt(0) * 7 + i * 3) % 5];
-    both(pluck, t0 + ((t1 - t0) * i) / chars.length, mtof(m), { amp: 0.07, pan: 0.35, decay: 0.986, length: 0.4 });
+    both(tone, t0 + ((t1 - t0) * i) / chars.length, mtof(m), { amp: 0.09, partials: MARIMBA_SPEECH, pan: 0.35 });
   });
 }
 function humanTalk(text, t0, t1) {
@@ -63,7 +67,7 @@ both(sweep, PAIN.missed[0], { f0: 140, f1: 60, dur: 0.35, amp: 0.25 });
 blip(PET[0][0] + 0.1, 74);
 both(sweep, 12.4, { f0: 300, f1: 900, dur: 0.25, amp: 0.1 });
 hit(dry, 13.1, { amp: 0.2, dur: 0.06, color: 'lo' });
-both(pluck, 13.12, mtof(55), { amp: 0.2, pan: 0.3 });
+xian(13.12, 69);
 for (const b of BUBBLES) catTalk(b.text, b.at[0] + 0.15, b.at[0] + 0.15 + Array.from(b.text).length / 14);
 chime(17.9, [79, 83, 86], 0.11, 0.12);
 
@@ -86,7 +90,7 @@ chime(NEXT.intro[0] + 0.2, [86, 88, 91], 0.07, 0.1);
 both(sweep, NEXT.pick[0], { f0: 500, f1: 800, dur: 0.07, amp: 0.08 });
 chime(NEXT.frame[0], [71, 76], 0.1, 0.14);
 both(tone, NEXT.pointAt, mtof(88), { amp: 0.12, partials: GLOCK, pan: -0.3 });
-both(pluck, NEXT.pointBack, mtof(55), { amp: 0.22, pan: 0.3 });
+xian(NEXT.pointBack, 69, 0.22);
 both(tone, NEXT.pointBack + 0.05, mtof(79), { amp: 0.1, partials: GLOCK, pan: 0.3 });
 riser(dry, NEXT.switchApp[0], NEXT.switchApp[1], { amp: 0.06, f0: 300, f1: 2500 });
 roll(dry, NEXT.switchApp[0], NEXT.switchApp[1], { amp: 0.05, pan0: 0.4, pan1: -0.1 });
@@ -96,11 +100,9 @@ both(sweep, NEXT.stale, { f0: 200, f1: 70, dur: 0.3, amp: 0.2 });
 both(tone, NEXT.newMark, mtof(83), { amp: 0.1, partials: GLOCK, pan: -0.1 });
 chime(NEXT.pause, [76, 71], 0.09, 0.16);
 
-// S5 — home: the cat comes to sit beside you; its theme, then the family chord.
+// S5 — home: 宪宪 comes to sit beside you; her marimba theme, then the closing chord.
 for (let t = 66.2; t < 67.6; t += 0.12) hit(dry, t, { amp: 0.045, dur: 0.02, color: 'lo', pan: 0.2 });
-[[67.2, 67], [67.55, 71], [67.9, 74], [68.5, 72], [68.85, 71], [69.3, 67]].forEach(([t, m]) =>
-  both(pluck, t, mtof(m), { amp: 0.16, pan: 0.25, decay: 0.995, length: 2.4 }),
-);
+[[67.2, 67], [67.55, 71], [67.9, 74], [68.5, 72], [68.85, 71], [69.3, 67]].forEach(([t, m]) => xian(t, m, 0.18));
 chime(71.6, [79, 83, 86, 91], 0.09, 0.14);
 chime(75.7, [91, 95], 0.07, 0.12);
 

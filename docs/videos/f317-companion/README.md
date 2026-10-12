@@ -28,7 +28,8 @@ node docs/videos/f317-companion/audio/synth.mjs out.wav                         
 | `composition/js/timeline.mjs` | timing truth and the TODAY / NEXT registers (pure data) |
 | `composition/js/geo.mjs` | fixed stage geometry shared by pointer, dock and overlays |
 | `composition/js/desktop.mjs`, `apps.mjs` | wallpaper, window chrome, donut; tutorial video, Clowder chat chore, modelling app |
-| `composition/js/pet.mjs` | 砚砚 from the Live `/pet.webp` spritesheet, its moves and short bubbles |
+| `composition/js/pet.mjs` | 宪宪 (v3 look, still image) acted with body motion per state, and her short bubbles |
+| `tools/cutout_from_screenshot.py`, `composition/img/` | stand-in cat cut from the operator’s screenshot (button un-layered, outline-bounded flood fill); replace with the official v3 sprite when available |
 | `composition/js/dock.mjs` | Live-style dock, live transcript, source card, typed history (TODAY) |
 | `composition/js/vision.mjs` | blueprint wash, picker, share frame, pointing, stale answer, pause (NEXT) |
 | `composition/js/cursor.mjs`, `overlay.mjs`, `main.mjs` | pointer path + clicks, captions / registers / title / end card, assembly |

@@ -30,7 +30,7 @@ Not shown on purpose: memory search across threads, cross-thread delegation, mee
 | # | Time | Viewer question | Claim | Proof on screen | Register |
 |---|---|---|---|---|---|
 | 1 | 0–11.6 | Why bother? | Asking about what you see costs a context switch | snip → flash → Clowder window covers the video → long re-explanation typed → video has moved on (“离开视频 00:41”) | designed_explanation |
-| 2 | 11.4–21 | What if…? | The cat can live beside the work | 砚砚 (the Live `/pet.webp` sprite) jumps out of the Clowder window onto the desktop: 「我在这里，你接着看。」; title card | designed_explanation |
+| 2 | 11.4–21 | What if…? | The cat can live beside the work | 宪宪 (current v3 look) jumps out of the Clowder window onto the desktop: 「我在这里，你接着看。」; title card | designed_explanation |
 | 3 | 21–40 | What works today? | Drag, click to talk or type, it reads the doc with source | drag → dock (`点开始聊天，直接对我说话`) → “F317 讲的是什么？” → source card → 「标题是『猫猫走进共同生活现场』。」→ typed history | TODAY |
 | 4 | 40–66 | Where is it going? | You choose what it sees; pointing both ways; follow across apps; stale answers drop; pause stops at once | picker → dashed share frame → click ring + cat’s ellipse → modelling app, roughness 0.62→0.30 → 「我在核对这处阴影，你继续说。」→ old answer struck → pause → “已停止共享” | NEXT |
 | 5 | 66–78 | So? | A companion that stays, without turning every sentence into a task | cat walks over and sits; 「想聊就说，想指就指。不必每句话都变成一件任务。」; end card with both registers listed; cat waves | designed_explanation |
@@ -39,19 +39,19 @@ Not shown on purpose: memory search across threads, cross-thread delegation, mee
 
 | Event | Job | Cue | Proven or vision |
 |---|---|---|---|
-| cat speaks | “someone is talking” without faking a voice | one soft pluck per character (G pentatonic) | illustrative |
+| cat speaks | “someone is talking” without faking a voice | one short marimba note per character (G pentatonic) | illustrative |
 | human speaks | the human’s voice | low hum per character | illustrative |
 | tutorial playing | the world goes on | the video’s own lo-fi loop, muffled when covered, gone after the app switch | illustrative |
 | connect / found / share on | state confirmed | short glockenspiel chimes | illustrative |
 | stale answer | correction lands | dull thunk | vision |
 | pause sharing | trust | two falling notes, pad drops away for a breath | vision |
-| home | it stays | 砚砚’s pluck theme, G major resolve | illustrative |
+| home | it stays | 宪宪’s marimba theme (her instrument in《一根线》too), G major resolve | illustrative |
 
 ## Provenance ledger
 
 | Asset | Class | Source |
 |---|---|---|
-| Desktop cat | product asset | `packages/web/public/concierge/skins/yanyan-codex/spritesheet.webp` (served as `/pet.webp` by `desktop/companion-live/server.mjs`) |
+| Desktop cat | **stand-in** | 宪宪 v3 cut from the operator’s 2026-10-12 screenshot by `tools/cutout_from_screenshot.py` → `composition/img/xianxian-v3-from-screenshot.png`. The v3 art is not in this repository; `xianxian-codex` / `yanyan-codex` here are older looks (operator correction). One still, so states are acted with body motion. Replace with the official v3 sprite when available. |
 | Dock copy and layout | re-drawn from product | `desktop/companion-live/index.html` |
 | 「我在这里，你接着看。」/「我在核对这处阴影，你继续说。」/「想聊就说，想指就指。」 | house copy | `desktop/companion-design/index.html` |
 | Desktop, windows, donut, modelling app | designed_explanation | drawn for the film; no third-party product names or logos |
@@ -60,6 +60,6 @@ Not shown on purpose: memory search across threads, cross-thread delegation, mee
 ## operator acceptance
 
 1. Does the line between TODAY and NEXT match what you would say on stage? Anything in TODAY you would move to NEXT (or back)?
-2. Is 砚砚 the right companion for this film (F317’s owner is a Maine Coon; Live uses the 砚砚 skin)?
+2. Companion is 宪宪 v3 (operator correction 2026-10-12). Send the official v3 sprite or source image to replace the screenshot stand-in?
 3. Which beat makes people want it — the hush when the cat steps out, the doc lookup, or the pause?
 4. Once a real Primary Journey is accepted, should beats 4a–4e be re-shot as real_capture?

@@ -48,9 +48,9 @@ export function buildApps(stage) {
   row('金属度', '0.00');
   row('颜色', '#EC8FAA');
 
-  const chat = makeWindow(stage, { ...CHAT, hh: CHAT.h, title: 'Clowder AI · 砚砚', cls: 'chat' });
+  const chat = makeWindow(stage, { ...CHAT, hh: CHAT.h, title: 'Clowder AI · 宪宪', cls: 'chat' });
   const cbody = h('div', 'c-body', chat.body);
-  h('div', 'c-old', cbody, '昨天 · 砚砚：周报我放在共享区了。');
+  h('div', 'c-old', cbody, '昨天 · 宪宪：周报我放在共享区了。');
   const sent = h('div', 'c-msg', cbody);
   h('div', 'thumb small', sent);
   h('div', 'c-text', sent, PAIN.text);

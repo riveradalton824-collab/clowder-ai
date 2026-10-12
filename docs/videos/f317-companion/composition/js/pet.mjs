@@ -1,45 +1,61 @@
-// 砚砚 on the desktop — the same spritesheet the F317 Live prototype serves as
-// /pet.webp — plus its short speech bubbles.
-import { clamp, easeInOut, easeOut, h, lerp, place, prog, typed, win } from '../../../promo-kit/util.mjs';
+// 宪宪 on the desktop. The current companion art (宪宪 v3) is not in this repository,
+// so this is a stand-in cut from the operator's screenshot (tools/cutout_from_screenshot.py).
+// One still image, so states are acted with body motion: breathe, lean in to listen,
+// sway while thinking, hop when it finds something, bounce when walking, wiggle to wave.
+import { clamp, easeOut, h, lerp, place, prog, typed, win } from '../../../promo-kit/util.mjs';
 import { PET_H, PET_W } from './geo.mjs';
-import { BUBBLES, PET, SPOT } from './timeline.mjs';
+import { BUBBLES, PET, SPOT, TODAY } from './timeline.mjs';
 
-export const SHEET = '/packages/web/public/concierge/skins/yanyan-codex/spritesheet.webp';
-const ROWS = {
-  idle: [0, [1200, 400, 400, 500, 500, 800]],
-  'running-right': [1, [120, 120, 120, 120, 120, 120, 120, 220]],
-  'running-left': [2, [120, 120, 120, 120, 120, 120, 120, 220]],
-  waving: [3, [140, 140, 140, 280]],
-  jumping: [4, [140, 140, 140, 140, 280]],
-  waiting: [6, [150, 150, 150, 150, 150, 260]],
-  running: [7, [120, 120, 120, 120, 120, 220]],
-  review: [8, [150, 150, 150, 150, 150, 280]],
-};
+export const SHEET = '/docs/videos/f317-companion/composition/img/xianxian-v3-from-screenshot.png';
 
-function frameOf(state, local) {
-  const [row, durs] = ROWS[state];
-  const total = durs.reduce((a, b) => a + b, 0) / 1000;
-  let tt = ((local % total) + total) % total;
-  let f = 0;
-  while (f < durs.length - 1 && tt >= durs[f] / 1000) tt -= durs[f++] / 1000;
-  return { row, f };
-}
-
-/** Where the pet is (top-left) and what it is doing at t. */
+/** Where the pet is (box top-left) and what it is doing at t. */
 export function petAt(t) {
   const seg = PET.find((p) => t >= p[0] && t < p[1]) || PET[PET.length - 1];
   const [t0, t1, state, from, to] = seg;
   const a = SPOT[from];
   const b = SPOT[to];
-  const k = easeInOut(prog(t, t0, t1));
+  const k = state === 'jumping' ? prog(t, t0, t1) : easeOut(prog(t, t0, t1));
   let y = lerp(a.y, b.y, k);
   if (state === 'jumping') y -= Math.sin(Math.PI * prog(t, t0, t1)) * 150;
-  return { x: lerp(a.x, b.x, k), y, state, local: t - t0, t0 };
+  return { x: lerp(a.x, b.x, k), y, state, local: t - t0 };
+}
+
+/** Body motion for a state: offset, tilt (deg) and squash. */
+function pose(state, local, t) {
+  const breathe = Math.sin((2 * Math.PI * t) / 2.6);
+  const p = { dx: 0, dy: 0, rot: 0, sx: 1 - 0.006 * breathe, sy: 1 + 0.012 * breathe };
+  const lean = easeOut(clamp(local / 0.4));
+  if (state === 'waiting') p.rot = -5 * lean; // listening: leans toward you
+  if (state === 'running') {
+    p.rot = 3 * Math.sin(2 * Math.PI * local * 0.9);
+    p.dy = -3 * Math.abs(Math.sin(2 * Math.PI * local * 0.9));
+  }
+  if (state === 'review') {
+    p.dy = -18 * Math.sin(Math.PI * clamp(local / 0.34));
+    p.rot = 3 * lean;
+  }
+  if (state === 'running-right' || state === 'running-left') {
+    const dir = state === 'running-right' ? 1 : -1;
+    p.dy = -12 * Math.abs(Math.sin((Math.PI * local) / 0.22));
+    p.rot = dir * (3 + 3 * Math.sin((2 * Math.PI * local) / 0.44));
+  }
+  if (state === 'jumping') {
+    p.sx = 0.94;
+    p.sy = 1.07;
+  }
+  if (state === 'waving') {
+    p.rot = 7 * Math.sin(2 * Math.PI * local * 1.6);
+    p.dy = -6 * Math.abs(Math.sin(2 * Math.PI * local * 1.6));
+  }
+  return p;
 }
 
 export function buildPet(stage) {
   const pet = h('div', 'pet', stage);
-  Object.assign(pet.style, { width: `${PET_W}px`, height: `${PET_H}px`, backgroundImage: `url(${SHEET})` });
+  Object.assign(pet.style, { width: `${PET_W}px`, height: `${PET_H}px` });
+  const img = h('img', 'pet-img', pet);
+  img.src = SHEET;
+  img.alt = '';
   const bubble = h('div', 'bubble', stage);
   const btxt = h('div', 'b-txt', bubble);
   const bsrc = h('div', 'b-src', bubble);
@@ -49,14 +65,18 @@ export function buildPet(stage) {
     pet.style.display = on ? '' : 'none';
     bubble.style.display = on ? '' : 'none';
     if (!on) return;
-    const p = petAt(t);
-    const { row, f } = frameOf(p.state, p.local);
-    pet.style.backgroundPosition = `${-f * PET_W}px ${-row * PET_H}px`;
-    const appear = easeOut(prog(t, PET[0][0], PET[0][0] + 0.4));
+    const at = petAt(t);
+    const p = pose(at.state, at.local, t);
+    if (t >= TODAY.drag[0] && t < TODAY.drag[1]) {
+      // lifted by the pointer: a little dangle
+      p.dy -= 10;
+      p.rot = -4 + 3 * Math.sin(2 * Math.PI * (t - TODAY.drag[0]) * 1.4);
+    }
     const land = prog(t, 13.1, 13.4);
     const squash = land > 0 && land < 1 ? Math.sin(Math.PI * land) * 0.1 : 0;
-    pet.style.opacity = appear;
-    pet.style.transform = `translate(${p.x}px, ${p.y}px) scale(${1 + squash}, ${1 - squash})`;
+    pet.style.opacity = easeOut(prog(t, PET[0][0], PET[0][0] + 0.4));
+    pet.style.transform = `translate(${at.x + p.dx}px, ${at.y + p.dy}px)`;
+    img.style.transform = `rotate(${p.rot}deg) scale(${p.sx * (1 + squash)}, ${p.sy * (1 - squash)})`;
     pet.style.zIndex = t < 13.0 ? 5 : 30;
 
     const b = BUBBLES.find((x) => t >= x.at[0] - 0.05 && t < x.at[1] + 0.3);
@@ -70,8 +90,8 @@ export function buildPet(stage) {
     bsrc.style.display = b.source ? '' : 'none';
     bsrc.style.opacity = clamp(prog(t, b.at[0] + 0.15 + len / 14, b.at[0] + 0.45 + len / 14));
     const bk = easeOut(prog(t, b.at[0], b.at[0] + 0.3));
-    bubble.style.right = `${1920 - (p.x + 46)}px`;
-    bubble.style.bottom = `${1080 - (p.y + 34)}px`;
+    bubble.style.right = `${1920 - (at.x + 46)}px`;
+    bubble.style.bottom = `${1080 - (at.y + 34)}px`;
     place(bubble, { o: win(t, b.at[0], b.at[1] + 0.3, 0.25), y: (1 - bk) * 10, s: lerp(0.94, 1, bk) });
   }
   return { update };

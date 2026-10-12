@@ -30,10 +30,10 @@ export function buildVision(stage) {
   const chipTxt = h('span', '', chip);
   const pause = h('button', 'pause', chip, '暂停共享');
   const youTag = h('div', 'tag you-tag', stage, '你指的位置');
-  const catTag = h('div', 'tag cat-tag', stage, '砚砚指回来 · 这块高光？');
+  const catTag = h('div', 'tag cat-tag', stage, '宪宪指回来 · 这块高光？');
   const shadowTag = h('div', 'tag cat-tag', stage, '底部接触阴影');
   const answer = h('div', 'answer', stage);
-  h('div', 'an-k', answer, '砚砚 · 深思中的回答');
+  h('div', 'an-k', answer, '宪宪 · 深思中的回答');
   h('div', 'an-txt', answer, '建议：提高环境光遮蔽，让高光更柔和。');
   const staleTag = h('div', 'an-stale', answer, '你换了说法 · 旧答案已作废');
   const thought = h('div', 'thought', stage);

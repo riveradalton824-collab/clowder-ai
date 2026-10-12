@@ -1,9 +1,7 @@
 /* The companion: desktop cat, bubbles, Live-style dock, transcript, source card,
    history; the NEXT blueprint register; the pointer. */
-.pet {
-  position: absolute; left: 0; top: 0; background-size: 1536px 1872px; background-repeat: no-repeat;
-  filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.25)); transform-origin: 50% 90%;
-}
+.pet { position: absolute; left: 0; top: 0; filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.22)); }
+.pet-img { position: absolute; left: 50%; bottom: 0; height: 236px; margin-left: -96px; transform-origin: 50% 100%; }
 .bubble {
   position: absolute; z-index: 32; max-width: 470px; padding: 12px 18px; background: #fff; border: 1px solid var(--hair);
   border-radius: 18px 18px 4px 18px; box-shadow: 0 10px 30px rgba(20, 20, 19, 0.14); transform-origin: 100% 100%; opacity: 0;

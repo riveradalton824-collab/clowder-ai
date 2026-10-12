@@ -52,9 +52,9 @@ export function buildDock(stage) {
   const dstate = h('div', 'dc-state', card);
 
   const hist = h('div', 'history', stage);
-  h('div', 'hi-head', hist, '砚砚 · 本次交流');
+  h('div', 'hi-head', hist, '宪宪 · 本次交流');
   h('div', 'hi-line you', hist, '你：F317 讲的是什么？');
-  h('div', 'hi-line cat', hist, '砚砚：标题是「猫猫走进共同生活现场」。');
+  h('div', 'hi-line cat', hist, '宪宪：标题是「猫猫走进共同生活现场」。');
   const sentLine = h('div', 'hi-line you', hist, '你：好，先这样，我接着看视频。');
   const hcomp = h('div', 'hi-compose', hist);
 
