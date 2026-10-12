@@ -9,7 +9,7 @@ const BALL_R = 22;
 const BANDS = [
   { at: [BEFORE.quote[0], BEFORE.quote[1]], zh: '「就差一个会 3D 的。」这句话，在会上说了三年。', en: '“We just need someone who knows 3D.” Said in meetings for three years.' },
   ...HOLDS.map((x) => ({ ...x, hold: true })),
-  { at: [GROW.strike + 0.3, GROW.ballToWang[0] + 0.4], zh: '看着像，尺寸是编的。', en: 'Looks right. The sizes were made up.' },
+  { at: [GROW.strike + 0.3, GROW.ballToYukina[0] + 0.4], zh: '看着像，尺寸是编的。', en: 'Looks right. The sizes were made up.' },
   { at: [STAGE.tagline, STAGE.endcard[0] + 0.2], zh: '不是让人退场，是让人上场。', en: 'Not stepping aside. Stepping up.', big: true },
 ];
 

@@ -1,14 +1,16 @@
-// ① Hand work off from anywhere: the cloud drafts v1 from photos; on Ajie's computer, with his
-// permission, 宪宪 reads the drawings there and carries back only the sizes; Lin spins v1 on her phone.
+// ① Hand work off from anywhere: Yukina sketches the rough shape on her tablet and the cloud sculpts
+// v1 from it; on Whut's computer, with his permission, 宪宪 reads the drawings there and carries back
+// only the sizes. (Mindfn's runnable prototype is proto.mjs.)
 import { easeIn, easeInOut, easeOut, h, lerp, place, prog, quad, svg, win } from '../../../promo-kit/util.mjs';
-import { avatar, catFace, makeClip } from './cast.mjs';
-import { CLOUD, S } from './timeline.mjs';
+import { avatar, handle, makeClip } from './cast.mjs';
+import { CLOUD, S, SKETCH } from './timeline.mjs';
 import { lock, makeCursor } from './ui.mjs';
 import { VIEW } from './work.mjs';
 
 const SCR = { x: 1174, y: 494, w: 672, h: 382 }; // the monitor's screen (stage px)
 const CAT_FEET = 306; // local y where the desktop cat sits, above the permission bar
 const SIGN = { x: 127, y: 166 };
+const PAD = { x: 1182, y: 176 }; // the tablet's drawing area (stage px, 656×236)
 
 function cad(parent) {
   const w = h('div', 'cad', parent);
@@ -32,22 +34,21 @@ function cad(parent) {
   return { w, hot };
 }
 
-export function buildCloud(stage, work) {
-  const cloud = h('div', 'rz panel cloud-card', stage);
-  const ch = h('div', 'panel-h', cloud, '团队云 · 照着产品照片先捏一版');
-  ch.style.gap = '10px';
-  const cb = h('div', 'panel-b', cloud);
-  const photos = h('div', 'cl-photos', cb);
-  for (let i = 0; i < 3; i++) h('div', 'cl-photo', photos);
-  h('div', 'cl-cap', cb, '产品照片 ×3 · 真实尺寸不知道');
-  const cc = h('div', 'cl-cat', cloud);
-  cc.appendChild(catFace(null, 'xian', 70));
-  h('span', '', cc, '宪宪 · 在云上');
+export function buildCloud(stage) {
+  const pad = h('div', 'rz panel tablet', stage);
+  const ph = h('div', 'panel-h', pad);
+  ph.appendChild(avatar(null, 'yukina', 30));
+  h('span', '', ph, `${handle('yukina')} 的平板 · 打稿`);
+  const sk = svg('svg', { class: 'sketch', width: 656, height: 236 }, h('div', 'pad-paper', pad));
+  const strokes = SKETCH.map((d) => svg('path', { d, fill: 'none', stroke: '#2d2a26', 'stroke-width': 3.2, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, sk));
+  const lens = [];
+  const padNote = h('div', 'pad-note', pad, '大形 · 先不管细节');
+  const pen = makeCursor(stage, 'yukina', 'pen');
 
   const pc = h('div', 'rz pc', stage);
   const who = h('div', 'who-row mon-who', pc);
-  who.appendChild(avatar(null, 'jie', 34));
-  h('span', '', who, '阿杰的电脑 · 结构图纸在这台机器上');
+  who.appendChild(avatar(null, 'whut', 34));
+  h('span', '', who, `${handle('whut')} 的电脑 · 结构图纸在这台机器上`);
   const mon = h('div', 'monitor', pc);
   const scr = h('div', 'mon-scr', mon);
   const draw = cad(scr);
@@ -56,54 +57,49 @@ export function buildCloud(stage, work) {
   sign.style.fontSize = '17px';
   const allow = h('div', 'allow', scr);
   lock(allow);
-  h('span', '', allow, '阿杰允许宪宪：在这台电脑上读结构图纸');
+  h('span', '', allow, '允许宪宪：在这台电脑上读结构图纸');
   h('em', '', allow, '仅本次');
   const btn = h('b', '', allow, '允许');
   const keep = h('div', 'keep', pc);
   lock(keep);
   h('span', '', keep, '图纸留在这台电脑，只把尺寸带回作品');
-  const cursor = makeCursor(stage, 'jie');
+  const cursor = makeCursor(stage, 'whut');
   const drop = h('div', 'dropcard', stage, '尺寸 + 零件表');
 
-  const phone = h('div', 'phone', stage);
-  const ps = h('div', 'ph-scr', phone);
-  const pt = h('div', 'ph-top', ps, '咖啡机拆解说明书');
-  h('span', '', pt, '原型 · 林姐做的 · 能转能拆');
-  const pcv = h('canvas', 'ph-canvas', ps);
-  pcv.width = 368;
-  pcv.height = 420;
-  const pctx = pcv.getContext('2d');
-  const btns = h('div', 'ph-btns', ps);
-  h('b', '', btns, '拆开看看');
-  h('b', '', btns, '换滤芯');
-  const swipe = h('div', 'ph-swipe', ps);
-  const seen = h('div', 'ph-seen', ps);
-  for (const w of ['zhou', 'chen', 'jie', 'wang']) seen.appendChild(avatar(null, w, 24));
-  h('span', '', seen, ' 已打开，在转');
-  const say = h('div', 'lin-say', stage);
-  say.appendChild(avatar(null, 'lin', 46));
-  const sayB = h('div', 'say-b', say, '我自己搭了个能转的原型，大家手机上转转看！');
-
   const catLocal = { x: 430, feet: CAT_FEET };
-  const ballAtCloud = { x: 1712, y: 236 };
+  const ballAtPad = { x: PAD.x + 620, y: PAD.y + 210 };
+  const ballAtCloud = { x: VIEW.x + VIEW.w - 70, y: VIEW.y + 60 };
   const ballAtPc = { x: SCR.x + SCR.w - 40, y: SCR.y + SCR.h + 30 };
   const workSpot = { x: VIEW.x + 140, y: VIEW.y + 90 };
 
   function update(t) {
-    const on = t >= S.cloud[0] - 0.5 && t < S.cloud[1] + 0.5;
-    const out = 1 - prog(t, CLOUD.phone[0] - 0.4, CLOUD.phone[0] + 0.2);
-    const ck = easeOut(prog(t, CLOUD.blob[0], CLOUD.blob[0] + 0.6));
-    place(cloud, { o: on ? ck * out : 0, x: (1 - ck) * 30 });
+    const on = t >= S.cloud[0] - 0.5 && t < CLOUD.proto[0] + 0.6;
+    const out = 1 - prog(t, CLOUD.proto[0] - 0.2, CLOUD.proto[0] + 0.4);
+    const tk = easeOut(prog(t, CLOUD.sketch[0] - 0.4, CLOUD.sketch[0] + 0.2));
+    place(pad, { o: on ? tk * out : 0, x: (1 - tk) * 30 });
     const pk = easeOut(prog(t, CLOUD.ballDown[0] - 0.6, CLOUD.ballDown[0]));
     place(pc, { o: on ? pk * out : 0, y: (1 - pk) * 30 });
+    pen.style.opacity = 0;
     const balls = [];
     if (!on) {
       cursor.style.opacity = 0;
       drop.style.opacity = 0;
-      phone.style.opacity = 0;
-      say.style.opacity = 0;
       return balls;
     }
+
+    // Yukina draws the rough shape, stroke by stroke; her pen follows the line
+    if (!lens.length) for (const p of strokes) lens.push(p.getTotalLength());
+    const per = (CLOUD.sketch[1] - CLOUD.sketch[0] - 0.4) / strokes.length;
+    strokes.forEach((p, i) => {
+      const k = easeInOut(prog(t, CLOUD.sketch[0] + i * per, CLOUD.sketch[0] + (i + 0.85) * per));
+      p.setAttribute('stroke-dasharray', `${lens[i]} ${lens[i]}`);
+      p.setAttribute('stroke-dashoffset', lens[i] * (1 - k));
+      if (t >= CLOUD.sketch[0] + i * per && t < CLOUD.sketch[0] + (i + 1) * per) {
+        const q = p.getPointAtLength(lens[i] * k);
+        pen.at({ x: PAD.x + q.x, y: PAD.y + q.y });
+      }
+    });
+    padNote.style.opacity = prog(t, CLOUD.sketch[1] - 0.4, CLOUD.sketch[1]);
 
     // the desktop cat: arrives with the work, asks, runs into the drawings, comes back carrying the sizes
     sign.style.opacity = 0;
@@ -143,40 +139,24 @@ export function buildCloud(stage, work) {
     const kk = easeOut(prog(t, CLOUD.keepLocal[0], CLOUD.keepLocal[0] + 0.5));
     place(keep, { o: Math.min(kk, 1 - prog(t, CLOUD.keepLocal[1] - 0.4, CLOUD.keepLocal[1])), x: (1 - kk) * 16 });
 
-    // the yarn ball: on the cloud → down to Ajie's computer → back up into the work, with the sizes
+    // the yarn ball: Yukina's tablet → the cloud (where 宪宪 sculpts) → Whut's computer → back with the sizes
     const dropFrom = { x: SCR.x + 470, y: SCR.y + CAT_FEET - 6 };
     if (t < CLOUD.ballDown[0]) {
-      balls.push({ x: ballAtCloud.x, y: ballAtCloud.y + Math.sin(t * 3) * 3, rot: t * 30, o: ck });
+      const k = easeInOut(prog(t, CLOUD.sketch[1] - 0.4, CLOUD.blob[0] + 0.4));
+      const p = quad(ballAtPad, { x: 1150, y: 120 }, ballAtCloud, k);
+      balls.push({ x: p.x, y: p.y + (k >= 1 ? Math.sin(t * 3) * 3 : 0), rot: t * 30 + k * 500, o: tk });
     } else if (t < CLOUD.ballUp[0]) {
       const k = easeInOut(prog(t, CLOUD.ballDown[0], CLOUD.ballDown[1]));
-      const p = quad(ballAtCloud, { x: 1890, y: 600 }, ballAtPc, k);
+      const p = quad(ballAtCloud, { x: 1250, y: 380 }, ballAtPc, k);
       balls.push({ x: p.x, y: p.y, rot: k * 720, o: 1 });
     } else {
       const k = easeInOut(prog(t, CLOUD.ballUp[0], CLOUD.ballUp[1]));
       const p = quad(dropFrom, { x: 1150, y: 200 }, workSpot, k);
-      const rest = prog(t, CLOUD.phone[0], CLOUD.phone[0] + 0.8);
-      const end = { x: lerp(p.x, 1580, easeInOut(rest)), y: lerp(p.y, 960, easeInOut(rest)) };
-      balls.push({ x: end.x, y: end.y, rot: k * -720 + rest * 360, o: 1 - prog(t, S.cloud[1] - 0.4, S.cloud[1]) });
+      balls.push({ x: p.x, y: p.y, rot: k * -720, o: 1 - prog(t, CLOUD.proto[0], CLOUD.proto[0] + 0.3) });
       const dk = prog(t, CLOUD.drop, CLOUD.drop + 0.3);
       place(drop, { o: dk * (1 - prog(t, CLOUD.snap[0] + 0.2, CLOUD.snap[0] + 0.6)), x: p.x + 26, y: p.y - 20, s: lerp(1, 0.85, k) });
     }
-    if (t < CLOUD.drop) drop.style.opacity = prog(t, CLOUD.drop, CLOUD.drop + 0.3);
-
-    // Lin's phone: her first prototype that runs, opened by everyone
-    const fk = easeOut(prog(t, CLOUD.phone[0], CLOUD.phone[0] + 0.6));
-    place(phone, { o: fk, x: 80 + (1 - fk) * 120 });
-    place(say, { o: prog(t, CLOUD.phone[0] + 0.5, CLOUD.phone[0] + 0.9) * (1 - prog(t, CLOUD.hold[0] - 0.2, CLOUD.hold[0] + 0.2)), y: 0 });
-    sayB.style.opacity = 1;
-    if (fk > 0) {
-      pctx.clearRect(0, 0, 368, 420);
-      const src = work.canvas;
-      const sw = 640;
-      const sh = (sw * 420) / 368;
-      pctx.drawImage(src, (VIEW.w - sw) / 2, (VIEW.h - sh) / 2 + 30, sw, sh, 0, 0, 368, 420);
-    }
-    const sp = prog(t, CLOUD.phone[0] + 1.4, CLOUD.phone[0] + 4.4);
-    place(swipe, { o: win(t, CLOUD.phone[0] + 1.2, CLOUD.phone[0] + 4.6, 0.25), x: lerp(70, 280, easeInOut((sp * 2) % 1)), y: 330 });
-    seen.style.opacity = prog(t, CLOUD.phone[0] + 2.6, CLOUD.phone[0] + 3.0);
+    if (t < CLOUD.drop) drop.style.opacity = 0;
     return balls;
   }
   return { update };

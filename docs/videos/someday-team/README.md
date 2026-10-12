@@ -7,16 +7,17 @@ owner: 宪宪
 tips_exempt: Standalone concept film for a meeting; does not add a product capability or change Hub navigation.
 ---
 
-# 《以后再说 / Someday》— a team becomes AI-native (170 s)
+# 《以后再说 / Someday》— an AI-native team (178 s, v2)
 
-A blueprint film for a company leader: a coffee-machine team finally builds the idea that sat on its
-"以后再说" wall for three years: a 3D teardown guide nobody knew how to make. It covers edge + cloud work,
-several people and several cats on one piece of work, people making the call, and getting better at being
-this team. It ends with the wall emptying out and a blank 「登场：＿＿」. No voiceover: on-screen Chinese with
-small English, and a 2–4 s hold line at the end of each section so the presenter can pause and talk.
-Story, beats and the honesty rules are in [`director-brief.md`](director-brief.md).
+A blueprint film for a company leader. A team (played by meow-club handles) finally builds the idea that sat on its
+"以后再说" wall for three years: a 3D teardown guide, because nobody knew 3D. Each person steps past their own trade by
+hand while the cats help them across. It shows edge + cloud work, two people's notes in one version, whoever owns a call
+making it, and the cats practising and improving how they practise. Only the coffee machine goes on stage at the end;
+two other notes start, the rest stay, and a blank 「登场：@＿＿」 is left for the room. No voiceover: on-screen Chinese with
+small English, and a 3–4 s hold line at the end of each section so the presenter can pause and talk. Story, cast, beats
+and the honesty rules are in [`director-brief.md`](director-brief.md).
 
-**Rendered film:** [`release/someday-team.mp4`](release/someday-team.mp4) (1920×1080, 30 fps, 170 s).
+**Rendered film:** [`release/someday-team.mp4`](release/someday-team.mp4) (1920×1080, 30 fps, 178 s).
 
 ## Setup (once)
 
@@ -45,7 +46,7 @@ node docs/videos/someday-team/audio/synth.mjs out.wav                           
 | `composition/js/before.mjs` | the three opening vignettes (meeting, draft folder, buried idea) |
 | `composition/js/model.mjs` | the three.js coffee machine: clay → v1 → true size → brand/round → teardown → core hidden |
 | `composition/js/work.mjs` | the shared-work card around the model, size brackets, part labels, practice HUD |
-| `composition/js/cloud.mjs`, `many.mjs`, `judge.mjs`, `grow.mjs` | the side panels for sections ① to ④ |
-| `composition/js/cast.mjs`, `ui.mjs` | people, f321 cat stickers, 宪宪 v3 clip player; named pointer, lock glyph |
+| `composition/js/cloud.mjs`, `proto.mjs`, `many.mjs`, `judge.mjs`, `grow.mjs` | the side panels for ① to ④; `proto.mjs` is the prototype phone (built in ①, handed on in ②) |
+| `composition/js/cast.mjs`, `ui.mjs` | handle identicons, f321 cat stickers, 宪宪 v3 clip player; each person's pen / finger / pointer, speech lines, lock glyph |
 | `composition/js/overlay.mjs`, `main.mjs` | badge, chips, bands, yarn balls, end card; assembly + `seek(t)` |
 | `audio/synth.mjs` | score: hums for people, per-cat instruments, the hush at ③, the resolve at 登场 |

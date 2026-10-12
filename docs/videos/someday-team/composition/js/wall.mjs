@@ -1,16 +1,18 @@
-// The "以后再说" wall and the desk in front of it, seen through a camera: the opening, the
-// pounce, the next task in ④ (rice cooker) and the ending (notes move to 已上场, the wall empties).
+// The "以后再说" wall and the desk in front of it, seen through a camera: the opening, the pounce
+// (Yukina pins the note under her pen), the next task in ④ (rice cooker), and the ending: only the
+// coffee machine goes on stage, two notes start, the rest stay, and its old spot gets a blank note.
 import { clamp, easeBack, easeIn, easeInOut, easeOut, h, lerp, place, prog, quad, win } from '../../../promo-kit/util.mjs';
-import { avatar, catFace, makeClip } from './cast.mjs';
+import { avatar, catFace, handle, makeClip } from './cast.mjs';
 import { MEET_FROM, TICKET_FROM } from './before.mjs';
-import { FIRSTS, GROW, NOTES, PEOPLE, REST_ORDER, RICE, S, STAGE, TURN } from './timeline.mjs';
+import { DOING, FIRSTS, GROW, NOTES, RICE, S, STAGE, TURN } from './timeline.mjs';
+import { makeCursor, say } from './ui.mjs';
 
 const BX = 246; // board inner origin (world)
 const BY = 106;
 const PANEL = { x: 1756, y: 106 }; // 已上场 inner origin (world)
 const NW = 250;
 const NH = 165;
-const COLORS = { board: 'c5', lang: 'c4', visit: 'c3', repair: 'c2', video: 'c5', kb: 'c3', hero: '', ar: 'c2', rice: '' };
+const COLORS = { photo: 'c5', lang: 'c4', offline: 'c3', sound: 'c2', repair: 'c5', voice: 'c3', hero: '', ar: 'c2', rice: '' };
 const CAMS = {
   before: { s: 0.78, cx: 1242, cy: 573 },
   full: { s: 1, cx: 960, cy: 540 },
@@ -22,6 +24,7 @@ const PHONE_AT = 1.0; // seconds into toWork when the phone screen fills the fra
 const CAT = { x: 690, feet: 905, scale: 1.5 }; // the pounce, centred under the hero note
 const END_CAT = { x: 1230, feet: 905, scale: 1.9 };
 const SIGN = { x: 127, y: 166 }; // centre of the blank sign in the `wait` frame (half-size px)
+const LAND = { x: CAT.x - 250, y: 868 }; // where the coffee note lands on the desk
 
 function mix(a, b, k) {
   return { s: lerp(a.s, b.s, k), cx: lerp(a.cx, b.cx, k), cy: lerp(a.cy, b.cy, k) };
@@ -29,8 +32,8 @@ function mix(a, b, k) {
 /** Camera: which world point sits at the screen centre, and how big. */
 export function camAt(t) {
   let c = CAMS.before;
-  if (t >= 19.6) c = mix(CAMS.before, CAMS.full, easeInOut(prog(t, 19.6, 21.2)));
-  if (t >= 25.2) c = mix(CAMS.full, CAMS.turn, easeInOut(prog(t, 25.2, 27.2)));
+  if (t >= 19.0) c = mix(CAMS.before, CAMS.full, easeInOut(prog(t, 19.0, 20.6)));
+  if (t >= 24.2) c = mix(CAMS.full, CAMS.turn, easeInOut(prog(t, 24.2, 26.2)));
   if (t >= TURN.toWork[0]) c = mix(CAMS.turn, CAMS.phone, easeInOut(prog(t, TURN.toWork[0], TURN.toWork[0] + PHONE_AT)));
   if (t >= GROW.toWall[0]) c = CAMS.full;
   if (t >= STAGE.pan[0]) c = mix(CAMS.full, CAMS.end, easeInOut(prog(t, STAGE.pan[0], STAGE.pan[1])));
@@ -50,16 +53,7 @@ function slapIn(t, at) {
   const k = prog(t, at, at + 0.28);
   return { o: k > 0 ? 1 : 0, s: lerp(1.3, 1, easeOut(k)), dr: (1 - easeOut(k)) * 6 };
 }
-const PANEL_SLOTS = (() => {
-  const m = { hero: { x: 30 + NW * 0.31, y: 80 + NH * 0.31, s: 0.62 } };
-  REST_ORDER.forEach((id, i) => {
-    const row1 = i < 3;
-    const s = row1 ? 0.5 : 0.38;
-    const x = row1 ? 26 + i * 168 : 4 + (i - 3) * 107;
-    m[id] = { x: x + (NW * s) / 2, y: (row1 ? 452 : 568) + (NH * s) / 2, s };
-  });
-  return m;
-})();
+const HERO_ON = { x: 30 + NW * 0.36, y: 84 + NH * 0.36, s: 0.72 }; // its slot in 已上场 (panel-local)
 
 function makeNote(parent, n) {
   const el = h('div', `note ${COLORS[n.id] ?? ''}`, parent);
@@ -84,16 +78,16 @@ export function buildWall(stage) {
   const phone = h('div', 'dphone', cam);
   const scr = h('div', 'dphone-scr', phone);
   const phoneOn = h('div', 'dphone-on', scr);
-  h('i', '', phoneOn);
-  h('b', '', phoneOn, '新建 3D 视窗');
+  h('b', '', phoneOn, '空白画布');
   h('div', 'dstand', cam);
 
   const firsts = FIRSTS.map((f, i) => {
     const row = h('div', 'first', cam);
-    row.appendChild(avatar(null, f.who, 46));
-    h('b', '', row, PEOPLE[f.who].name);
-    h('span', '', row, f.text);
-    Object.assign(row.style, { left: `${PANEL.x + 24}px`, top: `${PANEL.y + 214 + i * 58}px` });
+    row.appendChild(avatar(null, f.who, 50));
+    const col = h('div', '', row);
+    h('b', '', col, handle(f.who));
+    h('span', '', col, f.text);
+    Object.assign(row.style, { left: `${PANEL.x + 24}px`, top: `${PANEL.y + 236 + i * 84}px` });
     return row;
   });
 
@@ -101,8 +95,26 @@ export function buildWall(stage) {
   for (const n of [...NOTES, RICE]) notes[n.id] = { n, el: makeNote(cam, n) };
   const heroStamp = h('div', 'stamp', notes.hero.el, '做出来了 · v2');
   const riceStamp = h('div', 'stamp', notes.rice.el, '开工');
+  const doing = DOING.map((d) => {
+    const tag = h('div', 'doing', notes[d.id].el);
+    h('span', '', tag, `${d.tag} · ${handle(d.who)} +`);
+    tag.appendChild(catFace(null, d.cat, 22));
+    const pop = h('div', 'prog', cam);
+    const scr2 = h('div', 'prog-scr', pop);
+    if (d.id === 'lang') {
+      const word = h('div', 'prog-lang', scr2, '换滤芯');
+      h('div', 'prog-cap', pop, '说明书 · 5/12 种语言');
+      return { d, tag, pop, word };
+    }
+    h('div', 'prog-photo', scr2);
+    h('div', 'prog-box', scr2);
+    h('div', 'prog-tag', scr2, '滴水盘满了？');
+    h('div', 'prog-cap', pop, '用户拍的照片 · 自动框出问题');
+    return { d, tag, pop };
+  });
+  const LANGS = ['换滤芯', 'Replace filter', 'フィルター交換', 'Filter wechseln', 'Cambiar filtro'];
   const blank = h('div', 'note blank', cam);
-  h('span', 'blank-line', h('div', 'n-text', blank, '登场：'));
+  h('span', 'blank-line', h('div', 'n-text', blank, '登场：@'));
 
   const kick = h('div', 'kick', cam);
   const kh = h('div', 'kick-h', kick);
@@ -110,21 +122,23 @@ export function buildWall(stage) {
   h('span', '', kh, '电饭煲 · 开工第一步');
   h('div', 'kick-sub', kick, '按宪宪自己改过的练法 v2');
   const kRows = [
-    ['① 先打稿（大形）', ''],
-    ['② 找阿杰要真实尺寸', '不从网图猜'],
+    ['① 先打稿：@YukinaXSer 已经在画了', ''],
+    ['② 找 @whutzefengxie-ops 要真实尺寸', '不从网图猜'],
   ].map(([a, b]) => {
     const r = h('div', 'kick-row', kick, a);
     if (b) h('em', '', r, ` · ${b}`);
     return r;
   });
   const ask = h('div', 'kick-ask', kick);
-  ask.appendChild(avatar(null, 'jie', 30));
-  h('span', '', ask, '已请阿杰：电饭煲的结构图尺寸');
+  ask.appendChild(avatar(null, 'whut', 30));
+  h('span', '', ask, '已请 @whutzefengxie-ops：电饭煲的结构图尺寸');
 
   const cat = makeClip(cam, CAT.scale);
   cat.el.style.zIndex = 6;
-  const bubble = h('div', 'bubble', cam, '这个，我们可以接着做了。');
+  const bubble = h('div', 'bubble', cam, '我帮你捏。');
   bubble.style.zIndex = 7;
+  const yukSay = say(cam, 'yukina', '这个，我来打稿。');
+  const pen = makeCursor(cam, 'yukina', 'pen');
   const sign = h('div', 'sign-text', cam, '到你们了');
   sign.style.zIndex = 7;
 
@@ -143,20 +157,18 @@ export function buildWall(stage) {
     }
     if (id === 'hero' && t >= TURN.noteFall[0] && t < GROW.toWall[0]) {
       const k = prog(t, TURN.noteFall[0], TURN.noteFall[1]);
-      const land = { x: CAT.x - 250, y: 868 };
-      const p = quad(home, { x: home.x - 140, y: home.y + 40 }, land, easeIn(k));
-      st = { ...st, x: p.x, y: p.y, r: lerp(n.r, 9, k), s: lerp(1, 0.9, k) };
+      const p = quad(home, { x: home.x - 140, y: home.y + 40 }, LAND, easeIn(k));
+      const press = Math.sin(Math.PI * prog(t, TURN.pen[1] - 0.25, TURN.pen[1] + 0.1)) * 0.05;
+      st = { ...st, x: p.x, y: p.y, r: lerp(n.r, 9, k), s: lerp(1, 0.9, k) - press };
     }
     if (id === 'hero' && t >= GROW.toWall[0]) st = { ...st, r: 0 };
     if (id === 'rice' && t >= GROW.rice[0]) st.s *= lerp(1, 1.12, easeBack(prog(t, GROW.rice[0], GROW.rice[0] + 0.5)));
-    // ending: move to 已上场
-    const moveAt = id === 'hero' ? STAGE.heroMove[0] : STAGE.rest[0] + REST_ORDER.indexOf(id) * STAGE.rest[1];
-    if (t >= moveAt) {
-      const ps = PANEL_SLOTS[id];
-      const to = { x: PANEL.x + ps.x, y: PANEL.y + ps.y };
-      const k = easeInOut(prog(t, moveAt, moveAt + (id === 'hero' ? 1.4 : 0.9)));
+    // ending: only the coffee machine moves to 已上场
+    if (id === 'hero' && t >= STAGE.heroMove[0]) {
+      const to = { x: PANEL.x + HERO_ON.x, y: PANEL.y + HERO_ON.y };
+      const k = easeInOut(prog(t, STAGE.heroMove[0], STAGE.heroMove[1]));
       const p = quad({ x: st.x, y: st.y }, { x: lerp(st.x, to.x, 0.5), y: Math.min(st.y, to.y) - 120 }, to, k);
-      st = { ...st, x: p.x, y: p.y, r: lerp(st.r, id === 'hero' ? 0 : (REST_ORDER.indexOf(id) % 2 ? 2 : -2), k), s: lerp(st.s, ps.s, k) };
+      st = { ...st, x: p.x, y: p.y, r: lerp(st.r, 0, k), s: lerp(st.s, HERO_ON.s, k) };
     }
     return st;
   }
@@ -190,20 +202,34 @@ export function buildWall(stage) {
     });
     ask.style.opacity = prog(t, GROW.rice[0] + 3.2, GROW.rice[0] + 3.6);
 
-    phoneOn.style.opacity = t < S.turn[1] ? prog(t, TURN.phoneOn, TURN.phoneOn + 0.4) : 0;
+    phoneOn.style.opacity = t < S.turn[1] ? prog(t, TURN.tabletOn, TURN.tabletOn + 0.4) : 0;
     panel.style.opacity = prog(t, STAGE.pan[0] + 0.2, STAGE.pan[0] + 1.2);
     firsts.forEach((row, i) => {
       const at = STAGE.firsts[0] + i * STAGE.firsts[1];
       const k = easeOut(prog(t, at, at + 0.5));
       place(row, { o: k, x: (1 - k) * -16 });
     });
+    // two notes start, each with a one-breath look at the progress
+    doing.forEach(({ d, tag, pop, word }, i) => {
+      const at = STAGE.doing[0] + i * STAGE.doing[1];
+      const k = easeBack(prog(t, at, at + 0.4));
+      tag.style.opacity = prog(t, at, at + 0.3);
+      tag.style.transform = `scale(${lerp(1.4, 1, k)})`;
+      const pk = easeOut(prog(t, at + 0.3, at + 0.7)) * (1 - prog(t, at + 2.0, at + 2.4));
+      const n = slot(NOTES.find((x) => x.id === d.id));
+      place(pop, { o: pk, x: n.x + NW / 2 + 20, y: n.y - 100, s: lerp(0.7, 1, pk) });
+      if (word) word.textContent = LANGS[Math.min(LANGS.length - 1, Math.floor(Math.max(0, t - at - 0.5) / 0.32))];
+    });
+    const hs = slot(NOTES.find((x) => x.id === 'hero'));
     const bk = prog(t, STAGE.blank, STAGE.blank + 0.3);
-    place(blank, { o: bk > 0 ? 1 : 0, x: 960 - 150, y: 440 - 100, s: lerp(1.35, 1, easeOut(bk)), r: lerp(-6, -2, easeOut(bk)) });
+    place(blank, { o: bk > 0 ? 1 : 0, x: hs.x - 150, y: hs.y - 100, s: lerp(1.35, 1, easeOut(bk)), r: lerp(-6, -2, easeOut(bk)) });
 
     // 宪宪 v3 on the desk
     let ball = null;
     bubble.style.opacity = 0;
     sign.style.opacity = 0;
+    yukSay.style.opacity = 0;
+    pen.style.opacity = 0;
     if (t < S.turn[1] && t >= TURN.trotIn[0]) {
       const k = prog(t, TURN.trotIn[0], TURN.trotIn[1]);
       cat.scale = CAT.scale;
@@ -217,14 +243,18 @@ export function buildWall(stage) {
       const hop = Math.sin(Math.PI * clamp((local - 4.0) / 1.5)) * 80;
       const x = t < TURN.pounce[0] ? lerp(CAT.x - 900, CAT.x, easeOut(k)) : CAT.x;
       place(cat.el, { o: 1, x: x - w / 2, y: CAT.feet - hh - hop });
-      const bk2 = easeOut(prog(t, TURN.line[0], TURN.line[0] + 0.35));
-      place(bubble, { o: win(t, TURN.line[0], TURN.line[1], 0.3), x: CAT.x - 30, y: 360 + (1 - bk2) * 12, s: lerp(0.9, 1, bk2) });
-      // the work starts: a yarn ball rolls from the cat to the phone
-      const rb = prog(t, TURN.phoneOn - 0.3, TURN.phoneOn + 0.6);
+      const bk2 = easeOut(prog(t, TURN.catLine[0], TURN.catLine[0] + 0.35));
+      place(bubble, { o: win(t, TURN.catLine[0], TURN.catLine[1], 0.3), x: CAT.x - 30, y: 380 + (1 - bk2) * 12, s: lerp(0.9, 1, bk2) });
+      // Yukina takes it: her pen comes down on the note, she says she'll sketch it
+      pen.move(t, { x: LAND.x + 260, y: LAND.y - 260 }, { x: LAND.x + 20, y: LAND.y - 10 }, TURN.pen[0], TURN.pen[1], TURN.pen[1] - 0.1, TURN.toWork[0] + 0.4);
+      const yk = easeOut(prog(t, TURN.yukLine[0], TURN.yukLine[0] + 0.35));
+      place(yukSay, { o: win(t, TURN.yukLine[0], TURN.yukLine[1], 0.3), x: LAND.x - 230, y: 610 + (1 - yk) * 12 });
+      // the work starts: a yarn ball rolls from her note to the tablet
+      const rb = prog(t, TURN.tabletOn - 0.3, TURN.tabletOn + 0.6);
       if (rb > 0) {
-        const p = { x: lerp(CAT.x + 140, 1088, easeInOut(rb)), y: 880 - Math.sin(Math.PI * rb) * 30 };
+        const p = { x: lerp(LAND.x + 140, 1088, easeInOut(rb)), y: 880 - Math.sin(Math.PI * rb) * 30 };
         const sp = toScreen(c, p.x, p.y);
-        ball = { x: sp.x, y: sp.y, r: 22 * c.s, rot: rb * 540, o: 1 - prog(t, TURN.phoneOn + 0.7, TURN.phoneOn + 1.1) };
+        ball = { x: sp.x, y: sp.y, r: 22 * c.s, rot: rb * 540, o: 1 - prog(t, TURN.tabletOn + 0.7, TURN.tabletOn + 1.1) };
       }
     } else if (t >= GROW.rice[0] - 0.4 && t < STAGE.pan[0] + 0.6) {
       cat.scale = 1.2;

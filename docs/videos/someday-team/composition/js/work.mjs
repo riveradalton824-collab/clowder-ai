@@ -3,7 +3,7 @@
 import { clamp, easeBack, easeInOut, easeOut, h, lerp, place, prog, stateAt, svg } from '../../../promo-kit/util.mjs';
 import { avatar, catFace } from './cast.mjs';
 import { createModel } from './model.mjs';
-import { CATS, CLOUD, GROW, JUDGE, MANY, PEOPLE, S, TURN, VERSIONS } from './timeline.mjs';
+import { CATS, CLOUD, GROW, JUDGE, MANY, PEOPLE, S, SKETCH, TURN, VERSIONS } from './timeline.mjs';
 
 export const VIEW = { x: 100, y: 194, w: 1000, h: 716 };
 const V1 = [1.2, 0.84, 1.0];
@@ -34,7 +34,7 @@ export function modelAt(t) {
     };
   }
   const snap = prog(t, CLOUD.snap[0], CLOUD.snap[1]);
-  const spin = easeInOut(prog(t, CLOUD.phone[0] + 1.4, CLOUD.phone[0] + 4.4)) * Math.PI * 2;
+  const spin = (easeInOut(prog(t, CLOUD.runs + 0.4, CLOUD.runs + 2.6)) + easeInOut(prog(t, MANY.phone[0] + 0.6, MANY.phone[0] + 2.4))) * Math.PI * 2;
   const k = easeBack(snap);
   return {
     grow: prog(t, CLOUD.blob[0], CLOUD.blob[1]),
@@ -43,7 +43,8 @@ export function modelAt(t) {
     pulse: Math.sin(Math.PI * clamp(snap * 1.5)),
     brand: easeOut(prog(t, MANY.brand[0], MANY.brand[1])),
     round: t >= (MANY.slider[0] + MANY.slider[1]) / 2 ? 1 : 0,
-    explode: easeInOut(prog(t, MANY.explode[0], MANY.explode[1])),
+    explode: easeInOut(prog(t, MANY.spacing[0] + 0.3, MANY.spacing[1])),
+    pull: easeInOut(prog(t, MANY.pull[0], MANY.pull[1])) * (1 - easeInOut(prog(t, MANY.hold[0], MANY.hold[0] + 1.2))),
     glow: prog(t, MANY.glow[0], MANY.glow[1]) * (0.85 + 0.15 * Math.sin(t * 3)),
     hideCore: easeInOut(prog(t, JUDGE.hideCore[0], JUDGE.hideCore[1])),
     rotY: -0.55 + 0.32 * Math.sin((t - S.cloud[0]) * 0.21) + spin,
@@ -85,7 +86,14 @@ export function buildWork(stage) {
   const hBr = bracket('高 380 mm', 'start');
   const wBr = bracket('宽 300 · 深 330 mm', 'middle');
   const labels = LABELS.map((l) => ({ ...l, el: h('div', `w-label ${l.cls ?? ''}`, vp, l.text) }));
-  const v1note = h('div', 'w-sticky', vp, 'v1 粗模 · 照片捏的，比例靠猜');
+  const v1note = h('div', 'w-sticky', vp, 'v1 · 照 @YukinaXSer 的稿子捏 · 尺寸靠猜');
+  // her strokes, traced behind the clay while the cloud sculpts from them
+  const trace = svg('svg', { class: 'w-trace', width: VIEW.w, height: VIEW.h }, vp);
+  const tg = svg('g', { transform: 'translate(14 81) scale(1.56 2.6)' }, trace);
+  for (const d of SKETCH) svg('path', { d, fill: 'none', stroke: '#2d2a26', 'stroke-width': 3, 'vector-effect': 'non-scaling-stroke', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, tg);
+  const sculpt = h('div', 'w-sculpt', vp);
+  sculpt.appendChild(catFace(null, 'xian', 40));
+  h('span', '', sculpt, '宪宪 · 在云上照着稿子捏');
 
   // practice HUD (④)
   const hud = h('div', 'w-hud', vp);
@@ -141,10 +149,12 @@ export function buildWork(stage) {
     ver.textContent = t >= MANY.v2 ? 'v2' : 'v1';
     ver.style.opacity = !practice && t >= CLOUD.v1Note[0] ? 1 : 0;
     ver.classList.toggle('up', t >= MANY.v2 && t < MANY.v2 + 0.6);
-    verNote.textContent = t >= JUDGE.pick ? '王总定：只公开用户能换的部件' : t >= MANY.v2 ? '2 处意见已采用' : t >= CLOUD.snap[0] ? '真实尺寸' : '';
+    verNote.textContent = t >= JUDGE.pick ? '公开范围：@LeslieKuo 定' : t >= MANY.v2 ? '2 处意见已采用' : t >= CLOUD.snap[0] ? '真实尺寸' : '';
     verNote.style.opacity = practice ? 0 : 1;
     team.style.opacity = practice ? 0 : 1;
     cloudTag.style.opacity = practice ? 0 : 1;
+    trace.style.opacity = 0.32 * Math.min(prog(t, CLOUD.sketch[1] - 0.3, CLOUD.blob[0] + 0.3), 1 - prog(t, CLOUD.v1Note[1] - 0.6, CLOUD.v1Note[1]));
+    sculpt.style.opacity = Math.min(prog(t, CLOUD.blob[0] - 0.2, CLOUD.blob[0] + 0.3), 1 - prog(t, CLOUD.ballDown[0], CLOUD.ballDown[0] + 0.5));
     v1note.style.opacity = Math.min(prog(t, CLOUD.v1Note[0], CLOUD.v1Note[0] + 0.4), 1 - prog(t, CLOUD.snap[0], CLOUD.snap[0] + 0.4));
     vp.classList.toggle('practice', practice);
     flash.style.opacity = Math.max(1 - prog(t, CLOUD.snap[0], CLOUD.snap[0] + 0.5), 0) * (t >= CLOUD.snap[0] ? 0.7 : 0) + (practice ? 1 - prog(t, GROW.montage1[0] - 0.8, GROW.montage1[0] - 0.3) : 0) * 0.9;

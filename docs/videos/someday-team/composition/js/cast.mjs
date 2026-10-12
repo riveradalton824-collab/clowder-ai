@@ -1,5 +1,5 @@
 // The cast: people (avatar + name), house cats (f321 stickers) and 宪宪 v3 (alpha clip frames).
-import { h } from '../../../promo-kit/util.mjs';
+import { h, svg } from '../../../promo-kit/util.mjs';
 import { CATS, PEOPLE } from './timeline.mjs';
 
 const STICKERS = '/packages/web/public/f321/stickers/';
@@ -28,13 +28,33 @@ export function preloadUrls() {
   return urls;
 }
 
-/** A person: round avatar with the first character of their name, plus an optional label. */
+/** A person's colour, from the hue picked for their handle. */
+export const personColor = (who, l = 46) => `hsl(${PEOPLE[who].hue} 55% ${l}%)`;
+export const handle = (who) => `@${PEOPLE[who].handle}`;
+
+function hash(str) {
+  let x = 2166136261;
+  for (const c of str) {
+    x ^= c.codePointAt(0);
+    x = Math.imul(x, 16777619);
+  }
+  return x >>> 0;
+}
+
+/** A person: a GitHub-style identicon square (5×5, mirrored) made from the handle, plus an optional @handle. */
 export function avatar(parent, who, size = 56, withLabel = false) {
-  const p = PEOPLE[who];
   const box = h('div', 'person', parent);
-  const dot = h('div', 'p-av', box, p.name.slice(-1) === '姐' || p.name.slice(-1) === '总' ? p.name[0] : p.name.slice(-1));
-  Object.assign(dot.style, { width: `${size}px`, height: `${size}px`, background: p.color, fontSize: `${Math.round(size * 0.44)}px` });
-  if (withLabel) h('div', 'p-name', box, `${p.name} · ${p.role}`);
+  const sq = h('div', 'p-av id', box);
+  Object.assign(sq.style, { width: `${size}px`, height: `${size}px` });
+  const g = svg('svg', { viewBox: '0 0 6 6', width: size, height: size }, sq);
+  const bits = hash(PEOPLE[who].handle);
+  for (let col = 0; col < 3; col++) {
+    for (let row = 0; row < 5; row++) {
+      if (!((bits >>> (col * 5 + row)) & 1)) continue;
+      for (const x of col === 2 ? [2] : [col, 4 - col]) svg('rect', { x: x + 0.5, y: row + 0.5, width: 1.02, height: 1.02, fill: personColor(who, 52) }, g);
+    }
+  }
+  if (withLabel) h('div', 'p-name', box, handle(who));
   return box;
 }
 

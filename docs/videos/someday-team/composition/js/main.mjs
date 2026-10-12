@@ -6,7 +6,8 @@ import { buildGrow } from './grow.mjs';
 import { buildJudge } from './judge.mjs';
 import { buildMany } from './many.mjs';
 import { BAND_TEXT, buildOverlay } from './overlay.mjs';
-import { BEFORE, DURATION, FPS } from './timeline.mjs';
+import { buildProto } from './proto.mjs';
+import { BEFORE, DURATION, FPS, PEOPLE } from './timeline.mjs';
 import { buildWall } from './wall.mjs';
 import { buildWork } from './work.mjs';
 
@@ -14,7 +15,7 @@ const stage = document.getElementById('stage');
 const wall = buildWall(stage);
 const before = buildBefore(stage);
 const work = buildWork(stage);
-const sections = [buildCloud(stage, work), buildMany(stage, work), buildJudge(stage), buildGrow(stage)];
+const sections = [buildCloud(stage), buildProto(stage, work), buildMany(stage, work), buildJudge(stage), buildGrow(stage)];
 const overlay = buildOverlay(stage);
 
 function seek(t) {
@@ -31,9 +32,12 @@ function seek(t) {
 // Text that is typed in or swapped at runtime: lay it out once so its font subsets load before frame 0.
 const dynamic = [
   ...BEFORE.meetingLines.map((l) => l.text),
+  BEFORE.shelve.text,
   BAND_TEXT,
-  '练习场 · 宪宪自己练捏模 Practice 共同作品 第 0123456789 轮 和真实轮廓重合 % mm v1 v2',
-  '王总定：只公开用户能换的部件 2 处意见已采用 真实尺寸 已允许 已采用 · 小周 老陈 宪宪的练法 v2 · 自己改的',
+  ...Object.values(PEOPLE).map((p) => `@${p.handle}`),
+  '练习场 · 宪宪自己练捏模 Practice 共同作品 第 0123456789 轮 和真实轮廓重合 % mm v1 v2 原型 搭的',
+  '定：只公开用户自己能换的部件 2 处意见已采用 真实尺寸 已允许 已采用 · 宪宪的练法 v2 · 自己改的',
+  '换滤芯 Replace filter フィルター交換 Filter wechseln Cambiar filtro',
 ].join(' ');
 const warm = document.createElement('div');
 warm.className = 'warmup';

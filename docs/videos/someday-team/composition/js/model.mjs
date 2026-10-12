@@ -109,7 +109,7 @@ export function createModel(canvas, width, height) {
 
   /**
    * p: { grow 0..1, prop [sx,sy,sz], skew 0..1, brand 0..1, round 0|1, explode 0..1,
-   *      glow 0..1, hideCore 0..1, rotY, pulse }
+   *      glow 0..1, hideCore 0..1, pull 0..1, rotY, pulse }
    */
   function update(p) {
     const grow = p.grow ?? 1;
@@ -163,6 +163,10 @@ export function createModel(canvas, width, height) {
     halo.material.opacity = glow;
     halo.visible = glow > 0.01;
     P.tank.material.opacity = lerp(0.45, 0.3, ex);
+    // Leslie pulls the filter out with her finger
+    const pull = p.pull ?? 0;
+    P.filter.position.y += 0.45 * pull;
+    P.filter.position.z += 0.25 * pull;
     renderer.render(scene, camera);
   }
 

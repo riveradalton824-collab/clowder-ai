@@ -109,8 +109,9 @@
 .tr-opt span { display: block; margin-top: 6px; font: 500 18px/1.5 var(--sans); color: var(--body); }
 .tr-opt.picked { border-color: var(--success); background: #eef6ef; }
 .tr-check { position: absolute; right: 16px; top: 14px; padding: 4px 12px; border-radius: 999px; background: var(--success); color: #fff; font: 700 16px var(--sans); opacity: 0; }
-.wang { position: absolute; left: 1160px; top: 840px; display: flex; align-items: center; gap: 14px; opacity: 0; }
-.wang .p-name { font-size: 20px; }
+.owner { position: absolute; left: 1160px; top: 846px; display: flex; align-items: center; gap: 14px; opacity: 0; }
+.owner b { display: block; font: 600 20px var(--mono); color: var(--ink); }
+.owner span { display: block; font: 500 17px var(--sans); color: var(--muted); margin-top: 2px; }
 
 /* ④ practice: freeze, method, compare */
 .freeze { position: absolute; left: 120px; top: 420px; display: flex; align-items: center; gap: 14px; padding: 16px 24px; border-radius: 18px; background: #fff; box-shadow: 0 14px 40px rgba(0, 0, 0, 0.18); font: 700 32px var(--serif); opacity: 0; z-index: 6; }
@@ -136,3 +137,44 @@
 .strike { position: absolute; left: -8px; right: -8px; top: 50%; height: 7px; border-radius: 4px; background: var(--critical); transform-origin: 0 50%; transform: rotate(-14deg) scaleX(0); }
 .adopt { margin-top: 12px; display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 999px; background: var(--success); color: #fff; font: 700 17px var(--sans); opacity: 0; }
 .undo { margin-left: 8px; display: inline-flex; padding: 6px 12px; border-radius: 999px; border: 1.5px dashed var(--muted); color: var(--muted); font: 600 15px var(--sans); opacity: 0; }
+
+/* people's own pointers and lines */
+.cursor.pen svg, .cursor.arrow svg { display: block; }
+.cursor.pen svg { margin: -29px 0 0 -3px; }
+.cursor .touch { display: block; width: 46px; height: 46px; margin: -23px 0 0 -23px; border-radius: 50%; border: 3px solid; }
+.cursor.finger span { left: 26px; top: 10px; }
+.cursor.pen span { left: 28px; top: 26px; }
+.say { position: absolute; left: 0; top: 0; display: flex; align-items: flex-start; gap: 12px; opacity: 0; z-index: 20; }
+.say-body { padding: 10px 16px 12px; border-radius: 6px 18px 18px 18px; background: #fff; box-shadow: 0 12px 30px rgba(20, 20, 19, 0.16); max-width: 460px; }
+.say-body b { display: block; font: 600 15px var(--mono); color: var(--muted); margin-bottom: 2px; }
+.say-body span { font: 600 24px/1.4 var(--sans); color: var(--ink); }
+
+/* ① Yukina's tablet; the prototype phone (① Mindfn builds it, ② Leslie hands it on) */
+.tablet { top: 112px; height: 312px; }
+.pad-paper { position: relative; margin: 8px 22px 0; width: 656px; height: 236px; border-radius: 10px; background-color: #fbfaf7;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 0, 0, 0.035) 1px, transparent 1px); background-size: 24px 24px; }
+.sketch { position: absolute; left: 0; top: 0; }
+.pad-note { position: absolute; right: 36px; bottom: 18px; font: 22px var(--hand); color: var(--muted); opacity: 0; }
+.proto { position: absolute; left: 1460px; top: 150px; width: 360px; height: 720px; border-radius: 50px; background: #1d1c1a; padding: 16px; box-shadow: 0 30px 70px rgba(20, 20, 19, 0.3); opacity: 0; z-index: 4; transform-origin: 50% 80%; }
+.pr-scr { position: relative; width: 100%; height: 100%; border-radius: 36px; overflow: hidden; background: #fbf7f1; }
+.pr-top { padding: 34px 22px 8px; font: 700 22px var(--sans); }
+.pr-top span { display: block; font: 600 14px var(--mono); color: var(--muted); margin-top: 4px; }
+.pr-canvas { position: absolute; left: 0; top: 100px; width: 328px; height: 380px; }
+.pr-wires { position: absolute; left: 0; top: 0; width: 328px; height: 688px; }
+.pr-slots { position: absolute; left: 14px; right: 14px; top: 512px; display: flex; gap: 8px; }
+.pr-slots i { flex: 1; height: 50px; border-radius: 14px; border: 2px dashed var(--hair2); display: grid; place-items: center; font: 700 18px var(--sans); font-style: normal; color: transparent; }
+.pr-slots i.filled { border: 0; background: var(--primary-soft); color: var(--primary-active); }
+.pr-ok { position: absolute; left: 0; right: 0; top: 590px; text-align: center; font: 700 20px var(--sans); color: var(--success); opacity: 0; }
+.pr-btn { position: absolute; left: 0; top: 0; width: 96px; height: 50px; border-radius: 14px; display: grid; place-items: center; background: var(--primary-soft); color: var(--primary-active); font: 700 18px var(--sans); box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12); opacity: 0; z-index: 6; }
+.pr-cat { position: absolute; left: 0; top: 0; z-index: 6; opacity: 0; }
+.taker { position: absolute; left: 1130px; top: 905px; display: flex; align-items: center; gap: 10px; opacity: 0; z-index: 5; }
+.taker .p-name { font-size: 20px; }
+.w-trace { position: absolute; left: 0; top: 0; opacity: 0; }
+.w-sculpt { position: absolute; right: 24px; top: 22px; display: flex; align-items: center; gap: 10px; padding: 6px 14px 6px 6px; border-radius: 999px; background: #edf3f7; font: 600 17px var(--sans); color: #2f5876; opacity: 0; }
+.lap { top: 760px; height: 170px; }
+.lap .slider { margin: 18px 0 0; opacity: 1; }
+.lap .sl-track { left: 96px; }
+.lap-note { position: absolute; right: 24px; top: 16px; font: 600 16px var(--sans); color: var(--success); opacity: 0; }
+.freeze .fcap b { display: block; font: 600 16px var(--mono); color: var(--muted); }
+.freeze .fcap span { display: block; font: 700 30px var(--serif); color: var(--ink); margin-top: 2px; }
+.freeze svg { flex: none; background: #fbfaf7; border-radius: 10px; }

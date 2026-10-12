@@ -1,28 +1,29 @@
-// 《以后再说 / Someday》— a team becomes AI-native: it starts doing what it never could.
-// Single source of timing truth (pure data): imported by the composition and audio/synth.mjs.
-// Brief: meow-club/cat-cafe-map briefs/2026-10-12-leadership-concept-film (direction A, issue #3).
+// 《以后再说 / Someday》v2 — an AI-native team: people step past their own trade by hand, cats help
+// them across; whoever owns a call makes it. Single source of timing truth (pure data): imported by
+// the composition and audio/synth.mjs. Brief: meow-club/cat-cafe-map issue 3 (direction A, v2 board).
 
 export const FPS = 30;
-export const DURATION = 170;
+export const DURATION = 178;
 
 export const S = {
-  before: [0, 25],
-  turn: [25, 36],
-  cloud: [36, 66],
-  many: [66, 96],
-  judge: [96, 116],
-  grow: [116, 152],
-  stage: [152, DURATION],
+  before: [0, 24],
+  turn: [24, 34],
+  cloud: [34, 66],
+  many: [66, 98],
+  judge: [98, 120],
+  grow: [120, 156],
+  stage: [156, DURATION],
 };
 
 export const BADGE = '企业协作蓝图 · 基于开源实践探索';
 
+/** meow-club members; the roles in the film are invented for it. */
 export const PEOPLE = {
-  lin: { name: '林姐', role: '产品', color: '#b05f45' },
-  zhou: { name: '小周', role: '设计', color: '#5c5fac' },
-  chen: { name: '老陈', role: '售后', color: '#3f8552' },
-  jie: { name: '阿杰', role: '结构工程', color: '#4d7fa3' },
-  wang: { name: '王总', role: '负责人', color: '#8f4d89' },
+  yukina: { handle: 'YukinaXSer', role: '设计', hue: 330 },
+  mindfn: { handle: 'mindfn', role: '产品', hue: 205 },
+  whut: { handle: 'whutzefengxie-ops', role: '结构', hue: 145 },
+  leslie: { handle: 'LeslieKuo', role: '用户支持', hue: 28 },
+  zlz: { handle: 'zlzfun', role: '', hue: 265 },
 };
 export const CATS = {
   xian: { name: '宪宪', sticker: 'xianxian', midi: 69 },
@@ -31,133 +32,157 @@ export const CATS = {
   momo: { name: '墨墨', sticker: 'momo', midi: 71 },
 };
 
-/** The "以后再说" wall. x/y are board-local (board 1460×760); `hero` is the one the film follows. */
+/** The "以后再说" wall: big things a dev team shelves because nobody knows X. Board-local (1460×760). */
 export const NOTES = [
-  { id: 'board', text: '门店数据看板', sub: '', date: '2025.08', x: 60, y: 100, r: -1, at: 0.7 },
-  { id: 'lang', text: '德语版说明书', sub: '（没人懂德语）', date: '2024.06', x: 70, y: 380, r: 3, at: 1.1 },
-  { id: 'visit', text: '老客户回访小程序', sub: '', date: '2024.11', x: 380, y: 440, r: -4, at: 1.5 },
-  { id: 'repair', text: '把十年维修记录', sub: '变成助手', date: '2024.02', x: 700, y: 370, r: -2, at: 1.9 },
-  { id: 'video', text: '售后视频自动剪辑', sub: '', date: '2025.03', x: 1020, y: 210, r: 4, at: 2.3 },
-  { id: 'kb', text: '客服话术知识库', sub: '', date: '2025.11', x: 1000, y: 480, r: 2, at: 2.7 },
-  { id: 'hero', text: '咖啡机 3D 拆解说明书', sub: '（没人会 3D）', date: '2023.04', x: 360, y: 120, r: -3, at: 8.6 },
-  { id: 'ar', text: 'AR 门店导航', sub: '（没人做过 AR）', date: '2023.09', x: 700, y: 90, r: 2, at: 19.2 },
+  { id: 'photo', text: '用户拍照\n自动诊断故障', sub: '（没人做过视觉）', date: '2024.03', x: 60, y: 100, r: -1, at: 0.7 },
+  { id: 'lang', text: '12 种语言\n同时上线', sub: '（没人会这么多语言）', date: '2024.08', x: 70, y: 380, r: 3, at: 1.1 },
+  { id: 'offline', text: '离线也能用的\n说明书', sub: '（没人做过离线同步）', date: '2024.11', x: 380, y: 440, r: -4, at: 1.5 },
+  { id: 'sound', text: '听声音\n判断哪坏了', sub: '（没人懂声学）', date: '2025.02', x: 700, y: 370, r: -2, at: 1.9 },
+  { id: 'repair', text: '维修记录变成\n会答题的助手', sub: '（没人做过搜索）', date: '2025.06', x: 1020, y: 210, r: 4, at: 2.3 },
+  { id: 'voice', text: '能语音问答的\n说明书', sub: '（没人做过语音）', date: '2025.09', x: 1000, y: 480, r: 2, at: 2.7 },
+  { id: 'hero', text: '咖啡机 3D\n拆解说明书', sub: '（没人会 3D）', date: '2023.04', x: 360, y: 120, r: -3, at: 8.0 },
+  { id: 'ar', text: 'AR 门店导航', sub: '（没人做过 AR）', date: '2023.09', x: 700, y: 90, r: 2, at: 18.6 },
 ];
-export const RICE = { id: 'rice', text: '电饭煲 3D 拆解说明书', sub: '（下一张）', date: '2026.10', x: 1190, y: 40, r: -2, at: 140.4 };
+export const RICE = { id: 'rice', text: '电饭煲 3D\n拆解说明书', sub: '（下一张）', date: '2026.10', x: 1190, y: 40, r: -2, at: 144.4 };
 
 export const BEFORE = {
-  quote: [0.8, 9.0],
-  meeting: [3.0, 9.4],
+  quote: [0.8, 8.6],
+  meeting: [2.6, 8.8],
   meetingLines: [
-    { who: 'lin', at: 3.5, text: '要不做个 3D 拆解说明书？用户总问滤芯怎么换。' },
-    { who: 'zhou', at: 5.3, text: '好主意……可我们没人会 3D。' },
-    { who: 'wang', at: 6.9, text: '先放放，下季度再说。' },
+    { who: 'leslie', at: 3.1, text: '用户总问滤芯怎么换，做个 3D 拆解说明书？' },
+    { who: 'yukina', at: 4.9, text: '好主意……可我们没人会 3D。' },
   ],
-  folder: [9.4, 14.2],
-  tickets: [14.2, 20.0],
-  wallLine: [20.0, 25.0],
+  /** No single speaker shelves it: the room nods together. */
+  shelve: { at: 6.6, text: '下季度吧……' },
+  folder: [8.8, 13.6],
+  issues: [13.6, 19.2],
+  wallLine: [19.4, 24.0],
 };
 
 export const TURN = {
-  trotIn: [25.0, 26.2],
-  pounce: [26.0, 33.0],
-  noteFall: [30.3, 31.2],
-  line: [31.8, 34.8],
-  phoneOn: 32.4,
-  toWork: [34.6, 36.0],
+  trotIn: [24.0, 25.2],
+  pounce: [25.0, 32.0],
+  noteFall: [29.3, 30.2],
+  pen: [30.0, 30.7],
+  yukLine: [30.7, 33.6],
+  catLine: [31.7, 33.8],
+  tabletOn: 32.2,
+  toWork: [33.0, 34.4],
 };
 
-/** ① 端云：云上先捏，图纸在阿杰电脑上，只带回尺寸。 */
+/** ① Yukina sketches; the cloud sculpts from it; Whut's machine reads the drawings; Mindfn wires a prototype. */
 export const CLOUD = {
-  blob: [36.4, 40.5],
-  v1Note: [40.6, 43.0],
-  ballDown: [42.8, 44.2],
-  catIn: 44.0,
-  allowBar: [44.4, 47.0],
-  allowClick: 46.6,
-  trot: [46.9, 48.1],
-  carry: [48.1, 54.6],
-  drop: 54.3,
-  ballUp: [54.6, 56.0],
-  keepLocal: [49.0, 57.6],
-  snap: [56.0, 57.4],
-  phone: [57.8, 66.0],
-  hold: [62.8, 66.0],
+  sketch: [34.6, 39.0],
+  blob: [38.8, 42.6],
+  v1Note: [42.6, 45.4],
+  ballDown: [44.6, 45.8],
+  catIn: 45.6,
+  allowBar: [46.0, 48.4],
+  allowClick: 48.0,
+  trot: [48.3, 49.5],
+  carry: [49.5, 56.0],
+  drop: 55.7,
+  ballUp: [56.0, 57.2],
+  keepLocal: [50.4, 58.6],
+  snap: [57.2, 58.6],
+  proto: [58.8, 66.0],
+  buttons: [59.4, 60.2, 61.0],
+  wire: 61.6,
+  runs: 62.2,
+  hold: [63.0, 66.0],
 };
 
-/** ② 多人多 agent：两个人的意见长进同一个版本。 */
+/** Yukina's rough shape, stroke by stroke (tablet px). work.mjs traces them in the viewport too. */
+export const SKETCH = [
+  'M200 206 H462 V222 H200 Z',
+  'M226 206 V62 H420 V206',
+  'M214 62 H432 V48 H214 Z',
+  'M226 96 H186 V126 H226',
+  'M176 132 H214 V144 H176 Z M176 138 H122',
+  'M170 186 H232 V194 H170 Z',
+  'M420 76 H450 V192 H420',
+];
+
+/** ② Two people's notes on one model; each person adopts their own; Leslie hands the phone on. */
 export const MANY = {
-  zhouPin: 67.6,
-  zhouReply: 70.0,
-  chenPin: 72.6,
-  chenReply: 75.0,
+  yukPin: 67.0,
+  shuoReply: 69.0,
+  brand: [69.4, 70.4],
+  slider: [70.8, 72.6],
+  yukAdopt: 73.4,
+  lesPin: 74.4,
+  xianReply: 76.2,
   review: 77.6,
-  zhouAdopt: 80.0,
-  brand: [80.2, 81.2],
-  slider: [81.4, 83.0],
-  chenAdopt: 84.4,
-  explode: [84.6, 86.0],
-  glow: [85.8, 86.8],
-  v2: 87.2,
-  hold: [91.6, 96.0],
+  spacing: [79.0, 81.6],
+  glow: [81.4, 82.4],
+  lesAdopt: 83.2,
+  v2: 84.0,
+  phone: [85.0, 93.4],
+  pull: [87.6, 89.0],
+  handoff: [90.6, 91.6],
+  hold: [93.6, 98.0],
 };
 
-/** ③ 判断在人：内部结构要不要全公开。 */
-export const JUDGE = { card: [96.6, 104.4], ballToWang: [99.2, 100.6], pick: 102.2, hideCore: [104.4, 106.4], hold: [111.6, 116.0] };
+/** ③ The call goes to whoever is closest to it: Leslie owns the user side. */
+export const JUDGE = { card: [98.6, 120], ballToLeslie: [101.2, 102.6], pick: 104.2, reason: [104.6, 111.4], hideCore: [106.4, 108.4], hold: [115.6, 120.0] };
 
-/** ④ RSI：自己练、自己改练法；人拉方向、点头采用、可退回；新任务上复验。 */
+/** ④ Practice rounds; Yukina's sketch becomes the method; A/B under the same conditions; Yukina nods. */
 export const GROW = {
-  montage1: [117.0, 123.0],
-  freeze: [123.0, 126.4],
-  method: [124.6, 126.4],
-  montage2: [126.4, 129.0],
-  compare: [129.2, 136.0],
-  strike: 132.6,
-  ballToWang: [134.6, 135.6],
-  adopt: 136.4,
-  toWall: [139.6, 141.0],
-  rice: [141.0, 146.6],
-  hold: [147.6, 152.0],
+  montage1: [121.0, 127.0],
+  freeze: [127.0, 130.4],
+  method: [128.6, 130.4],
+  montage2: [130.4, 133.0],
+  compare: [133.2, 140.0],
+  strike: 136.6,
+  ballToYukina: [138.6, 139.6],
+  adopt: 140.4,
+  toWall: [143.6, 145.0],
+  rice: [145.0, 150.6],
+  hold: [151.6, 156.0],
 };
 export const VERSIONS = [
-  { at: 117.0, v: 1, score: 38, skew: 1, prop: [1.25, 0.78, 0.9], label: '歪嘴了' },
-  { at: 118.4, v: 3, score: 47, skew: 0.6, prop: [1.15, 0.86, 0.95] },
-  { at: 119.6, v: 6, score: 55, skew: 0.35, prop: [0.9, 1.12, 1.05] },
-  { at: 120.8, v: 9, score: 61, skew: 0.2, prop: [1.08, 0.92, 1.0] },
-  { at: 121.8, v: 14, score: 64, skew: 0.15, prop: [0.95, 1.06, 0.97] },
-  { at: 126.4, v: 18, score: 82, skew: 0.05, prop: [1.03, 0.98, 1.0] },
-  { at: 127.4, v: 23, score: 91, skew: 0.02, prop: [1.01, 1.0, 1.0] },
-  { at: 128.3, v: 27, score: 96, skew: 0, prop: [1, 1, 1] },
+  { at: 121.0, v: 1, score: 38, skew: 1, prop: [1.25, 0.78, 0.9], label: '歪嘴了' },
+  { at: 122.4, v: 3, score: 47, skew: 0.6, prop: [1.15, 0.86, 0.95] },
+  { at: 123.6, v: 6, score: 55, skew: 0.35, prop: [0.9, 1.12, 1.05] },
+  { at: 124.8, v: 9, score: 61, skew: 0.2, prop: [1.08, 0.92, 1.0] },
+  { at: 125.8, v: 14, score: 64, skew: 0.15, prop: [0.95, 1.06, 0.97] },
+  { at: 130.4, v: 18, score: 82, skew: 0.05, prop: [1.03, 0.98, 1.0] },
+  { at: 131.4, v: 23, score: 91, skew: 0.02, prop: [1.01, 1.0, 1.0] },
+  { at: 132.3, v: 27, score: 96, skew: 0, prop: [1, 1, 1] },
 ];
 
-/** 登场：咖啡机那张先上场（每人一行「第一次」，都在前面演过），其余点子陆续挪过去，墙空下去。 */
+/** 登场: only the coffee machine goes on stage; two notes start; the rest stay; a blank note for the room. */
 export const STAGE = {
-  pan: [152.0, 153.6],
-  heroMove: [153.2, 154.6],
-  firsts: [154.8, 0.85],
-  rest: [158.4, 0.4],
-  blank: 162.2,
-  cat: 162.8,
-  tagline: 163.6,
-  endcard: [166.6, DURATION],
+  pan: [156.0, 157.6],
+  heroMove: [157.2, 158.6],
+  firsts: [158.8, 0.9],
+  doing: [162.6, 2.4],
+  blank: 168.0,
+  cat: 168.6,
+  tagline: 169.4,
+  endcard: [173.4, DURATION],
 };
 export const FIRSTS = [
-  { who: 'lin', text: '第一次自己做出能跑的原型' },
-  { who: 'zhou', text: '第一次做 3D' },
-  { who: 'chen', text: '意见第一次变成了画面' },
-  { who: 'jie', text: '图纸一张没出门' },
+  { who: 'yukina', text: '第一次做 3D' },
+  { who: 'mindfn', text: '第一次自己做出能跑的原型' },
+  { who: 'whut', text: '第一次调拆解动画，图纸一张没出门' },
+  { who: 'leslie', text: '第一次亲手拆开它，递给下一个人' },
 ];
-export const REST_ORDER = ['ar', 'repair', 'rice', 'board', 'kb', 'video', 'visit', 'lang'];
+export const DOING = [
+  { id: 'lang', tag: '在做 5/12', who: 'zlz', cat: 'momo' },
+  { id: 'photo', tag: '在做', who: 'mindfn', cat: 'shuo' },
+];
 
 export const SECTIONS = [
   { n: '①', at: S.cloud, zh: '在哪都能把活交出去', en: 'Hand work off from anywhere' },
   { n: '②', at: S.many, zh: '几个人和几只猫，围着同一件作品', en: 'Several people, several cats, one piece of work' },
-  { n: '③', at: S.judge, zh: '判断始终在人', en: 'People make the call' },
+  { n: '③', at: S.judge, zh: '谁的领域谁拍板', en: 'Whoever owns it makes the call' },
   { n: '④', at: S.grow, zh: '越干越懂这个团队', en: 'It gets better at being this team' },
 ];
 export const HOLDS = [
   { at: BEFORE.wallLine, zh: '每个好点子，最后都贴回了这面墙。', en: 'Every good idea ends up back on this wall.' },
   { at: CLOUD.hold, zh: '活在哪儿干都行：图纸不出门，结论回到作品。', en: 'Work runs where it must. The drawings stay; the answer comes back.' },
   { at: MANY.hold, zh: '两个人的意见，长进了同一个版本。', en: 'Two people’s notes, one better version.' },
-  { at: JUDGE.hold, zh: '猫把取舍摆清楚，拍板的是人。', en: 'The cats lay out the trade-off. People decide.' },
+  { at: JUDGE.hold, zh: '猫把取舍摆清楚，离这件事最近的人拍板。', en: 'The cats lay out the trade-off. Whoever is closest decides.' },
   { at: GROW.hold, zh: '猫自己练、自己改练法；变好要人点头，也能退回。', en: 'They practise and improve how they practise — adopted with a nod, reversible.' },
 ];
