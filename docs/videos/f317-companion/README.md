@@ -33,4 +33,4 @@ node docs/videos/f317-companion/audio/synth.mjs out.wav                         
 | `composition/js/dock.mjs` | Live-style dock, live transcript, source card, typed history (TODAY) |
 | `composition/js/vision.mjs` | blueprint wash, picker, share frame, pointing, stale answer, pause (NEXT) |
 | `composition/js/cursor.mjs`, `overlay.mjs`, `main.mjs` | pointer path + clicks, captions / registers / title / end card, assembly |
-| `audio/synth.mjs` | score; cat speech as per-character plucks, human speech as hums |
+| `audio/synth.mjs` | score; 宪宪 speaks in per-character marimba notes, the human in hums |
