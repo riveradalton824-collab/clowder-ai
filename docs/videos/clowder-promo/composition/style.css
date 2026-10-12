@@ -1,0 +1,106 @@
+/* 《一根线 / One Thread》— stage, opening scenes, captions, finale.
+   Tokens follow DESIGN.md (warm canvas, terracotta primary). */
+:root {
+  --primary: #b05f45;
+  --primary-active: #8f4730;
+  --primary-soft: #f3e3da;
+  --ink: #141413;
+  --body: #3d3d3a;
+  --muted: #5f5d57;
+  --canvas: #fffbf6;
+  --s1: #fcf7f0;
+  --s2: #f7f2ea;
+  --s3: #efe9e3;
+  --hair: #e5dfd5;
+  --hair2: #d8d1c6;
+  --success: #3f8552;
+  --warning: #a8721c;
+  --critical: #c64545;
+  --info: #4d7fa3;
+  --serif: "Noto Serif SC", "Source Serif 4", "WenQuanYi Zen Hei", serif;
+  --sans: "Inter", "Noto Sans SC", "WenQuanYi Zen Hei", sans-serif;
+  --mono: "JetBrains Mono", "Noto Sans SC", monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--canvas); }
+body { font-family: var(--sans); color: var(--ink); -webkit-font-smoothing: antialiased; }
+#stage { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: var(--canvas); }
+.scene { position: absolute; inset: 0; }
+.layer { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; }
+
+/* faces (f321 stickers) */
+.face { position: relative; flex: none; }
+.face-in { position: absolute; inset: 0; transform: scale(var(--sx, 1), var(--sy, 1)); transform-origin: 50% 90%; }
+.face-img { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: contain; }
+.yarn { fill: none; stroke: var(--primary); stroke-width: 4; stroke-linecap: round; stroke-dasharray: 1 1; }
+
+/* S1 — the router */
+.bg-dark { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 42%, #2a2824 0%, #181715 55%, #121110 100%); }
+.strand { fill: none; stroke: #cc785c; stroke-width: 2.6; stroke-linecap: round; stroke-dasharray: 1 1; }
+.chatwin {
+  position: absolute; width: 440px; height: 270px; background: #1f1e1b; border: 1px solid #34322d;
+  border-radius: 16px; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.35); overflow: hidden;
+}
+.chatwin-head {
+  height: 50px; display: flex; align-items: center; gap: 10px; padding: 0 20px;
+  border-bottom: 1px solid #34322d; color: #c9c5bd; font: 600 19px var(--sans);
+}
+.dot { width: 10px; height: 10px; border-radius: 50%; }
+.dot-0 { background: #cc785c; }
+.dot-1 { background: #6fbf80; }
+.dot-2 { background: #7fb0d0; }
+.chatwin-body { padding: 22px 20px; display: flex; flex-direction: column; gap: 15px; }
+.bar { height: 14px; border-radius: 7px; background: #3a3732; width: 0; }
+.cursor { position: absolute; left: 0; top: 0; filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5)); }
+.keycap {
+  position: absolute; left: 0; top: 0; padding: 8px 14px; border-radius: 10px; background: #faf9f5;
+  color: #141413; font: 700 22px var(--sans); box-shadow: 0 4px 0 #a09d96;
+}
+.counter { position: absolute; right: 70px; top: 52px; font: 500 24px var(--mono); color: #a09d96; }
+.open-line {
+  position: absolute; left: 0; right: 0; top: 900px; text-align: center;
+  font: 500 54px var(--serif); color: #faf9f5; letter-spacing: 1px;
+}
+.open-line em { font-style: normal; color: #e08a6c; }
+
+/* S2 — the promise */
+.counter-top {
+  position: absolute; left: 0; right: 0; bottom: 0; opacity: 0;
+  background: linear-gradient(#f7f2ea, #efe9e3); border-top: 3px solid var(--hair2);
+}
+.promise-face { position: absolute; left: 0; top: 0; }
+.promise-q { position: absolute; left: 0; right: 0; top: 230px; text-align: center; font: 500 68px var(--serif); }
+.brand { position: absolute; left: 0; right: 0; top: 140px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.brand-logo { width: 120px; height: 120px; }
+.brand-name { font: 800 84px var(--sans); letter-spacing: -2px; line-height: 1.05; }
+.brand-sub { font: 500 40px var(--serif); color: var(--body); }
+
+/* chapter captions + payoff line */
+.chapter { position: absolute; left: 100px; top: 24px; display: flex; align-items: center; gap: 18px; opacity: 0; }
+.chapter-no {
+  width: 46px; height: 46px; border-radius: 50%; background: var(--primary); color: #fff;
+  font: 700 22px var(--sans); display: flex; align-items: center; justify-content: center;
+}
+.chapter-zh { font: 700 36px var(--serif); line-height: 1.15; }
+.chapter-en { font: 500 17px var(--sans); color: var(--muted); margin-top: 3px; letter-spacing: 0.2px; }
+.payoff { position: absolute; left: 190px; top: 390px; width: 760px; opacity: 0; z-index: 20; }
+.payoff-zh { font: 700 88px var(--serif); }
+.payoff-sub { font: 500 38px var(--serif); color: var(--body); margin-top: 20px; }
+.payoff-en { font: 500 22px var(--sans); color: var(--muted); margin-top: 14px; }
+
+/* S8 — finale */
+.finale-face { position: absolute; left: 0; top: 0; filter: drop-shadow(0 12px 24px rgba(20, 20, 19, 0.12)); }
+.tie { stroke-width: 3.5; }
+.tagline { position: absolute; left: 0; right: 0; top: 640px; text-align: center; opacity: 0; }
+.tagline-zh { font: 700 72px var(--serif); }
+.tagline-en { font: 500 28px var(--sans); color: var(--muted); margin-top: 16px; }
+.endcard { position: absolute; left: 0; right: 0; top: 500px; display: flex; flex-direction: column; align-items: center; opacity: 0; }
+.end-logo { width: 104px; height: 104px; }
+.end-name { font: 800 78px var(--sans); letter-spacing: -2px; line-height: 1.05; margin-top: 4px; }
+.end-motto { font: italic 500 34px "Source Serif 4", var(--serif); color: var(--primary-active); margin-top: 8px; }
+.end-meta { font: 500 22px var(--sans); color: var(--muted); margin-top: 28px; }
+.end-url {
+  font: 600 26px var(--mono); margin-top: 14px; padding: 10px 24px; border-radius: 999px;
+  background: var(--primary-soft); color: var(--primary-active);
+}
+.end-note { position: absolute; right: 40px; bottom: 26px; font: 400 16px var(--sans); color: var(--muted); opacity: 0; }
