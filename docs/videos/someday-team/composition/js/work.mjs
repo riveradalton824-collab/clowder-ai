@@ -101,7 +101,7 @@ export function buildWork(stage) {
   const score = h('div', 'hud-score', hud);
   const bars = h('div', 'hud-bars', hud);
   const barEls = VERSIONS.map(() => h('i', '', bars));
-  const ref = h('div', 'hud-ref', vp, '虚线：真实轮廓（按阿杰给的尺寸）');
+  const ref = h('div', 'hud-ref', vp, '虚线：真实轮廓（按 @whutzefengxie-ops 给的尺寸）');
   const oops = h('div', 'w-oops', vp, '歪嘴了');
 
   // the reference silhouette for practice, drawn once from the true-size model

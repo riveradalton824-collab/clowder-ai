@@ -23,6 +23,7 @@ and the honesty rules are in [`director-brief.md`](director-brief.md).
 
 ```bash
 cd docs/videos/someday-team && npm install --no-audit --no-fund   # three@0.160.0, served locally (no CDN)
+apt install fluidsynth fluid-soundfont-gm   # the score: GM soundfont FluidR3_GM (MIT); or SOMEDAY_SF2=/path/to.sf2
 docs/videos/someday-team/tools/extract-v3-frames.sh <path-to>/clowder-ai-plugins   # 宪宪 v3 clips → assets/v3/
 ```
 
@@ -49,4 +50,5 @@ node docs/videos/someday-team/audio/synth.mjs out.wav                           
 | `composition/js/cloud.mjs`, `proto.mjs`, `many.mjs`, `judge.mjs`, `grow.mjs` | the side panels for ① to ④; `proto.mjs` is the prototype phone (built in ①, handed on in ②) |
 | `composition/js/cast.mjs`, `ui.mjs` | handle identicons, f321 cat stickers, 宪宪 v3 clip player; each person's pen / finger / pointer, speech lines, lock glyph |
 | `composition/js/overlay.mjs`, `main.mjs` | badge, chips, bands, yarn balls, end card; assembly + `seek(t)` |
-| `audio/synth.mjs` | score: hums for people, per-cat instruments, the hush at ③, the resolve at 登场 |
+| `audio/arrange.mjs`, `audio/midi.mjs` | the score as MIDI: piano intro, band groove, ③ breakdown, ④ montage with a tape stop, 登场 chorus |
+| `audio/synth.mjs` | renders the MIDI with fluidsynth, adds on-screen sound effects, dips under hold lines, mixes |

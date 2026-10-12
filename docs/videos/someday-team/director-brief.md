@@ -60,14 +60,18 @@ the one who shelved the idea.
 
 ## Sound map
 
-| Event | Cue |
+The score is a real-instrument arrangement (`audio/arrange.mjs` → MIDI → fluidsynth with FluidR3_GM), 120 bpm, every
+section on its own bar grid. Sound effects are only for what you see happen (paper, clicks, sliders, the ball rolling).
+
+| Part | Music |
 |---|---|
-| people talking | soft hums per character, each handle in its own register; the room's 「下季度吧」 is everyone at once |
-| 宪宪 / 烁烁 / 砚砚 | marimba / glockenspiel / low wooden tone |
-| hands-on actions | pen scratches (sketch), slider ticks, button drops, a rising sweep as the filter comes out |
-| waiting wall → working team | D minor pads → D major arpeggios |
-| a person decides (③) | pads drop away until Leslie picks |
-| 登场 | four rising marimba notes for the firsts; language plucks for the 12-language note; a breath before the blank note; 宪宪's theme; D add9 resolve |
+| before (D minor) | solo piano melody over soft strings |
+| turn | a ticking hat, a heartbeat kick, a reverse-cymbal swell; the note falls on a crash and a D major chord |
+| ① ② | the band: drums, finger bass, electric piano, steel-guitar arpeggio; marimba plays 宪宪's hook, glockenspiel answers as 烁烁; celesta when the prototype runs and at v2 |
+| ③ | piano and strings; it thins to one high string note until Leslie picks, then a warm D/F♯ and a gentle pulse |
+| ④ | four-on-the-floor montage; a tape stop on the freeze, celesta over Yukina's replayed strokes; back in on a swell; a crash on the nod |
+| 登场 | celesta notes for the four firsts; the whole band lands on the blank note; D add9 ring-out under the end card |
+| holds | the music dips about 3 dB and thins out, so the presenter can talk over it |
 
 ## Provenance
 
@@ -78,4 +82,4 @@ the one who shelved the idea.
 | people | meow-club handles with generated identicons; roles and lines invented |
 | coffee machine | three.js, built for this film (`composition/js/model.mjs`) |
 | company, data, screens | invented for the film |
-| score | original (`audio/synth.mjs`) |
+| score | original arrangement (`audio/arrange.mjs`), rendered with the FluidR3_GM soundfont (MIT licence) |
